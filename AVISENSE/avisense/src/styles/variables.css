@@ -1,0 +1,63 @@
+:root {
+  /* Dark Blue Theme Colors */
+  --color-primary: #60a5fa;
+  /* Bright Blue */
+  --color-secondary: #ff6b35;
+  /* Orange */
+  --color-background: #0a192f;
+  /* Dark Navy Blue */
+  --color-surface: #112240;
+  /* Slightly Lighter Blue */
+  --color-surface-elevated: #1a2f4a;
+  /* Even Lighter for hover states */
+  --color-text-main: #e2e8f0;
+  /* Light Gray */
+  --color-text-muted: #94a3b8;
+  /* Muted Gray */
+  --color-text-bright: #f1f5f9;
+  /* Bright White */
+  --color-success: #10b981;
+  /* Background Color Change */
+  /*
+- [x] Update CSS variables to use dark blue background
+- [x] Adjust text colors for dark theme
+- [/] Update component styles for dark theme
+- [ ] Verify contrast and readability
+*/
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+  --color-border: #1e3a5f;
+  /* Dark Blue Border */
+  --color-accent: #38bdf8;
+  /* Cyan Accent */
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Typography */
+  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', 'Courier New', monospace;
+
+  /* Tech Accents */
+  --color-tech-cyan: #00f0ff;
+  --color-tech-green: #0aff0a;
+  --color-tech-amber: #ffaa00;
+  --color-tech-purple: #bc13fe;
+
+  /* Shadows - Enhanced for dark theme */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+  --shadow-glow: 0 0 20px rgba(96, 165, 250, 0.15);
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
