@@ -3,6 +3,7 @@ from flask_cors import CORS
 import joblib
 import numpy as np
 import pandas as pd
+import json
 from datetime import datetime
 
 app = Flask(__name__)
@@ -14,10 +15,30 @@ model = joblib.load('../avisense_model_cmapss.joblib')
 scaler = joblib.load('../avisense_scaler_cmapss.joblib')
 model_info = joblib.load('../avisense_model_cmapss_info.joblib')
 
+# Load sensor thresholds
+with open('sensor_thresholds.json', 'r') as f:
+    SENSOR_THRESHOLDS = json.load(f)
+
+# Sensor name mappings for user-friendly display
+SENSOR_NAMES = {
+    'sensor_2': 'Total Temperature at Fan Inlet',
+    'sensor_3': 'Total Temperature at LPC Outlet',
+    'sensor_4': 'Total Temperature at HPC Outlet',
+    'sensor_7': 'Total Pressure at HPC Outlet',
+    'sensor_9': 'Physical Fan Speed',
+    'sensor_11': 'Physical Core Speed',
+    'sensor_12': 'Engine Pressure Ratio',
+    'sensor_14': 'Corrected Fan Speed',
+    'sensor_17': 'Corrected Core Speed',
+    'sensor_20': 'Ratio of Fuel Flow to Ps30',
+    'sensor_21': 'Corrected Fan Speed'
+}
+
 print(f"Model loaded: {model_info['model_type']}")
 print(f"Features: {model_info['feature_names']}")
 print(f"Safe Recall: {model_info['safe_recall']:.1%}")
 print(f"Failure Recall: {model_info['failure_recall']:.1%}")
+print(f"Sensor thresholds loaded for {len(SENSOR_THRESHOLDS)} sensors")
 
 @app.route('/health', methods=['GET'])
 def health():
@@ -78,6 +99,10 @@ def predict():
         prediction = model.predict(X_scaled)[0]
         probabilities = model.predict_proba(X_scaled)[0]
         
+        # Detect anomalies
+        sensor_data = {feat: float(data[feat]) for feat in feature_names}
+        anomalies = detect_anomalies(sensor_data)
+        
         # Prepare response
         result = {
             'prediction': 'PRONE TO FAILURE' if prediction == 1 else 'SAFE',
@@ -87,7 +112,8 @@ def predict():
             'failure_probability': float(probabilities[1]),
             'timestamp': datetime.now().isoformat(),
             'engine_id': data.get('engine_id', 'unknown'),
-            'actions': get_recommended_actions(prediction, probabilities[1])
+            'actions': get_recommended_actions(prediction, probabilities[1]),
+            'anomalies': anomalies
         }
         
         return jsonify(result)
@@ -97,6 +123,49 @@ def predict():
             'error': str(e),
             'message': 'Prediction failed'
         }), 500
+
+def detect_anomalies(sensor_data):
+    """Detect sensor anomalies based on threshold violations"""
+    anomalies = []
+    
+    for sensor, value in sensor_data.items():
+        if sensor not in SENSOR_THRESHOLDS:
+            continue
+            
+        thresholds = SENSOR_THRESHOLDS[sensor]
+        min_threshold = thresholds['min']
+        max_threshold = thresholds['max']
+        
+        # Check if value is outside normal range
+        if value < min_threshold:
+            severity = 'high' if value < (min_threshold - thresholds['std']) else 'medium'
+            anomalies.append({
+                'sensor': sensor,
+                'sensor_name': SENSOR_NAMES.get(sensor, sensor),
+                'value': round(float(value), 2),
+                'threshold': f'below {min_threshold}',
+                'threshold_min': min_threshold,
+                'threshold_max': max_threshold,
+                'severity': severity,
+                'description': f"{SENSOR_NAMES.get(sensor, sensor)}: {value:.2f} (below min {min_threshold})"
+            })
+        elif value > max_threshold:
+            severity = 'high' if value > (max_threshold + thresholds['std']) else 'medium'
+            anomalies.append({
+                'sensor': sensor,
+                'sensor_name': SENSOR_NAMES.get(sensor, sensor),
+                'value': round(float(value), 2),
+                'threshold': f'exceeds {max_threshold}',
+                'threshold_min': min_threshold,
+                'threshold_max': max_threshold,
+                'severity': severity,
+                'description': f"{SENSOR_NAMES.get(sensor, sensor)}: {value:.2f} (exceeds max {max_threshold})"
+            })
+    
+    # Sort by severity (high first) and then by how far outside threshold
+    anomalies.sort(key=lambda x: (0 if x['severity'] == 'high' else 1, -abs(x['value'] - ((x['threshold_min'] + x['threshold_max']) / 2))))
+    
+    return anomalies
 
 def get_recommended_actions(prediction, failure_prob):
     """Get recommended actions based on prediction"""

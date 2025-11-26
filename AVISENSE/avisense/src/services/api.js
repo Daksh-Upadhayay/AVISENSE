@@ -30,11 +30,12 @@ export const predictSafety = async (data) => {
             probability: result.failure_probability,
             confidence: result.confidence,
             actions: result.actions,
-            top_features: [
-                { name: 'Sensor 11 (HPC Pressure)', contribution: 0.22 },
-                { name: 'Sensor 4 (LPT Temp)', contribution: 0.21 },
-                { name: 'Sensor 12 (Fuel Flow)', contribution: 0.14 }
-            ],
+            top_features: result.anomalies?.map(anomaly => ({
+                name: anomaly.sensor_name || anomaly.sensor,
+                contribution: anomaly.value,
+                description: anomaly.description,
+                severity: anomaly.severity
+            })) || [],
             timestamp: result.timestamp,
             engine_id: result.engine_id
         };

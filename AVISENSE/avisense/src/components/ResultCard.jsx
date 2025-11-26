@@ -29,10 +29,10 @@ const ResultCard = ({ result }) => {
                     <div className={styles.faultAnalysis}>
                         <h5 className={styles.subTitle}>Detected Anomalies:</h5>
                         <ul className={styles.faultList}>
-                            {top_features.slice(0, 3).map((feature, index) => (
+                            {top_features.slice(0, 5).map((feature, index) => (
                                 <li key={index} className={styles.faultItem}>
                                     <Activity size={14} className={styles.faultIcon} />
-                                    <span>High deviation in <strong>{feature.name}</strong></span>
+                                    <span>{feature.description || `High deviation in ${feature.name}`}</span>
                                 </li>
                             ))}
                         </ul>
