@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - MODEL_PATH=/app/models
+      - LOG_LEVEL=INFO
+      - ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
+    volumes:
+      - ./app:/app/app
+      - ./models:/app/models
+      - ../avisense_model_cmapss.joblib:/app/models/avisense_model_cmapss.joblib
+      - ../avisense_scaler_cmapss.joblib:/app/models/avisense_scaler_cmapss.joblib
+      - ../avisense_model_cmapss_info.joblib:/app/models/avisense_model_cmapss_info.joblib
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    restart: unless-stopped

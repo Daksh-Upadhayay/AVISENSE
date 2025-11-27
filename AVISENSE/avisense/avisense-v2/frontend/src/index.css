@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-bg: rgba(30, 41, 59, 0.7);
+  }
+
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    @apply bg-dark-bg text-dark-text antialiased selection:bg-primary-500 selection:text-white;
+    background-image:
+      radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.08), transparent 25%);
+    background-attachment: fixed;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-bg;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-dark-border rounded-full hover:bg-primary-600 transition-colors;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-dark-surface/70 backdrop-blur-md border border-white/10 shadow-card;
+  }
+
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-card shadow-glass transition-all duration-300 hover:bg-white/10 hover:border-primary-500/30 hover:shadow-glow-sm;
+  }
+
+  .btn {
+    @apply px-5 py-2.5 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-bg disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-600 to-primary-500 text-white hover:from-primary-500 hover:to-primary-400 hover:shadow-glow focus:ring-primary-500 border border-transparent;
+  }
+
+  .btn-secondary {
+    @apply bg-white/5 text-white hover:bg-white/10 border border-white/10 focus:ring-white/20;
+  }
+
+  .btn-outline {
+    @apply bg-transparent border border-primary-500 text-primary-400 hover:bg-primary-500/10 hover:text-primary-300 focus:ring-primary-500;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-dark-muted hover:text-white hover:bg-white/5;
+  }
+
+  .input-group {
+    @apply space-y-1.5;
+  }
+
+  .input {
+    @apply w-full px-4 py-2.5 bg-dark-surface/50 border border-dark-border rounded-lg text-white placeholder-dark-muted focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all duration-200;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-dark-muted ml-1;
+  }
+
+  .heading-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-primary-200 to-primary-400;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+}
