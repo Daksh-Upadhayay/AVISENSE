@@ -1,0 +1,13 @@
+{
+  "test_metrics": {
+    "auroc": 0.9135098128708352,
+    "precision_at_5pct": 0.47058823529411764,
+    "precision_at_10pct": 0.4117647058823529,
+    "precision_at_20pct": 0.3235294117647059,
+    "optimal_threshold": 0.8987464666366576,
+    "f1_at_optimal": 0.5526315789473685
+  },
+  "final_train_loss": 0.8349870617190996,
+  "final_val_loss": 0.8462583780288696,
+  "epochs_trained": 14
+}

@@ -1,0 +1,53 @@
+{
+  "task_type": "classification",
+  "window_length": 32,
+  "stride": 4,
+  "n_features": 24,
+  "feature_names": [
+    "setting_1",
+    "setting_2",
+    "setting_3",
+    "sensor_1",
+    "sensor_2",
+    "sensor_3",
+    "sensor_4",
+    "sensor_5",
+    "sensor_6",
+    "sensor_7",
+    "sensor_8",
+    "sensor_9",
+    "sensor_10",
+    "sensor_11",
+    "sensor_12",
+    "sensor_13",
+    "sensor_14",
+    "sensor_15",
+    "sensor_16",
+    "sensor_17",
+    "sensor_18",
+    "sensor_19",
+    "sensor_20",
+    "sensor_21"
+  ],
+  "scaler_type": "standard",
+  "max_rul": null,
+  "splits": {
+    "train": {
+      "n_samples": 3063
+    },
+    "val": {
+      "n_samples": 681
+    },
+    "test": {
+      "n_samples": 674
+    }
+  },
+  "label_distribution": {
+    "train": {
+      "mean": 0.06366307541625857,
+      "std": 0.24415177297083535,
+      "min": 0.0,
+      "max": 1.0
+    }
+  }
+}

@@ -1,0 +1,23 @@
+model:
+  name: "rul_lstm_v1"
+  type: "lstm_regressor"
+  framework: "pytorch"
+  version: "1.0.0"
+  input_dim: 18
+  hidden_dim: 100
+  num_layers: 2
+  dropout: 0.2
+
+data:
+  window_length: 30
+  validation_split: 0.2
+
+training:
+  batch_size: 64
+  epochs: 50
+  learning_rate: 0.001
+  patience: 10
+
+paths:
+  train_data: "data/processed/train_rul.npz"
+  save_dir: "models/deep"

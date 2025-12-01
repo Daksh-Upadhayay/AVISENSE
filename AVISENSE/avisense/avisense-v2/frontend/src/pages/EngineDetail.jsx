@@ -5,6 +5,7 @@ import { Layout } from '../components/layout/Layout';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { MakePredictionModal } from '../components/predictions/MakePredictionModal';
+import { TemporalAnomalyChart } from '../components/predictions/TemporalAnomalyChart';
 import { ArrowLeft, Activity, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
 
 export default function EngineDetail() {
@@ -103,6 +104,11 @@ export default function EngineDetail() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Main Info / Latest Status */}
                 <div className="lg:col-span-2 space-y-6">
+                    {/* Temporal Anomaly Chart */}
+                    {predictions.length > 0 && (
+                        <TemporalAnomalyChart predictions={predictions} threshold={0.5} />
+                    )}
+
                     <Card>
                         <h3 className="text-lg font-semibold text-white mb-4">Prediction History</h3>
 
@@ -137,11 +143,7 @@ export default function EngineDetail() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="text-right">
-                                                <div className="text-sm font-medium text-white">
-                                                    {(pred.failure_probability * 100).toFixed(1)}% Risk
-                                                </div>
-                                            </div>
+                                            {/* Risk percentage removed as requested */}
                                         </div>
 
                                         {/* Anomalies Preview */}

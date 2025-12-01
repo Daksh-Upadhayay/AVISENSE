@@ -18,7 +18,7 @@ export function SensorHealthMap({ anomalies, inputData }) {
     };
 
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 gap-3">
             {sensors.map(sensor => {
                 const { status, color } = getSensorStatus(sensor);
                 const value = inputData?.[sensor];
@@ -27,9 +27,9 @@ export function SensorHealthMap({ anomalies, inputData }) {
                     <div key={sensor} className={`p-3 rounded-lg border ${color} transition-all duration-200 hover:scale-105`}>
                         <div className="flex justify-between items-start mb-1">
                             <span className="text-xs font-medium uppercase opacity-80">{sensor.replace('_', ' ')}</span>
-                            {status === 'normal' ? <CheckCircle className="w-3 h-3" /> : <AlertTriangle className="w-3 h-3" />}
+                            {status === 'normal' ? <CheckCircle className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
                         </div>
-                        <div className="text-lg font-bold">
+                        <div className="text-lg font-bold truncate" title={value}>
                             {value ? value.toFixed(1) : '-'}
                         </div>
                     </div>

@@ -8,6 +8,8 @@ class PredictionRequest(BaseModel):
     engine_id: str = Field(..., description="Engine UUID")
     input_data: Dict[str, float] = Field(..., description="Sensor and setting values")
     source: str = Field(default="ui", description="Source of prediction: ui, manual, ingest")
+    use_deep: bool = Field(default=False, description="Use deep learning autoencoder for anomaly detection")
+    model_family: str = Field(default="dense_ae", description="Model family to use: dense_ae, lstm_ae")
     
     @validator('input_data')
     def validate_features(cls, v):
@@ -51,7 +53,9 @@ class PredictionResponse(BaseModel):
     anomalies: List[Anomaly]
     shap: Optional[Dict[str, Any]] = None
     risk_percent: Optional[float] = None
+    anomaly_score_normalized: Optional[float] = None
     correlated_anomalies: Optional[List[Dict[str, Any]]] = None
+    rul_prediction: Optional[float] = None
     model_version: str
     model_type: str
     input_data: Dict[str, float]

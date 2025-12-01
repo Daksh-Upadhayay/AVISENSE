@@ -58,10 +58,20 @@ class ExplainabilityEngine:
             # For binary classification, we usually care about the positive class (failure)
             # shap_values[1] corresponds to class 1 (Failure)
             if isinstance(shap_values, list):
-                failure_shap = shap_values[1][0]
+                # Binary classification: shap_values is [class_0_values, class_1_values]
+                # Each is shape (n_samples, n_features)
+                failure_shap = shap_values[1][0]  # Get first sample from class 1
             else:
-                failure_shap = shap_values[0] # Regression or binary simplified
+                # Single output (regression or simplified)
+                # Shape is (n_samples, n_features)
+                if len(shap_values.shape) == 2:
+                    failure_shap = shap_values[0]  # Get first sample
+                else:
+                    failure_shap = shap_values  # Already 1D
 
+            # Ensure failure_shap is 1D array
+            failure_shap = np.array(failure_shap).flatten()
+            
             # Create dictionary of feature -> shap value
             raw_values = {name: float(val) for name, val in zip(feature_names, failure_shap)}
 

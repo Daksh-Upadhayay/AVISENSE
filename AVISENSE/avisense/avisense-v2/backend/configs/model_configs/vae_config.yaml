@@ -1,0 +1,24 @@
+model:
+  name: "vae_v1"
+  type: "vae"
+  framework: "pytorch"
+  version: "1.0.0"
+
+architecture:
+  input_dim: 24  # 21 sensors + 3 settings
+  sequence_length: 32
+  hidden_dim1: 128
+  hidden_dim2: 64
+  latent_dim: 16
+
+training:
+  batch_size: 64
+  epochs: 100
+  learning_rate: 0.001
+  beta: 0.1  # Weight for KL divergence loss
+  early_stopping_patience: 10
+  validation_split: 0.2
+
+paths:
+  train_data: "data/processed/train.npz"
+  save_dir: "app/ml/models/saved/vae"

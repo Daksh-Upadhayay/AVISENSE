@@ -4,7 +4,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from app.api import health, predict
-from app.ml.model_loader import load_model
+from app.ml.model_loader import load_model, load_autoencoder, load_vae_model, load_rul_model
 from app.config import settings
 import logging
 import sys
@@ -49,13 +49,16 @@ async def startup_event():
     logger.info("🚀 Avisense API Starting...")
     logger.info("=" * 80)
     
-    # Load ML model
+    # Load ML models
     try:
         await load_model()
-        logger.info("✅ Model loaded successfully")
+        await load_autoencoder()
+        await load_vae_model()
+        await load_rul_model()
+        logger.info("✅ All models loaded successfully")
     except Exception as e:
-        logger.error(f"❌ Failed to load model: {e}")
-        logger.warning("⚠️  API will start but predictions will fail")
+        logger.error(f"⚠️  Deep learning model loading failed: {e}")
+        logger.info("ℹ️  Continuing with RandomForest only")
     
     logger.info(f"📡 API running on {settings.API_HOST}:{settings.API_PORT}")
     logger.info(f"🔒 CORS enabled for: {settings.ALLOWED_ORIGINS}")
@@ -71,6 +74,16 @@ async def shutdown_event():
 # Include routers
 app.include_router(health.router, tags=["Health"])
 app.include_router(predict.router, tags=["Predictions"])
+
+# Production integration routers
+from app.api import models, monitoring, feedback
+app.include_router(models.router, prefix="/api", tags=["Model Registry"])
+app.include_router(monitoring.router, prefix="/api", tags=["Monitoring"])
+app.include_router(feedback.router, prefix="/api", tags=["Feedback"])
+
+# Test endpoint (no auth required)
+from app.api import test_predict
+app.include_router(test_predict.router, tags=["Testing"])
 
 
 @app.get("/")

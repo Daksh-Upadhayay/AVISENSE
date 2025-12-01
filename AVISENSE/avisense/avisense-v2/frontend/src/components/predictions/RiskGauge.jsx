@@ -53,7 +53,6 @@ export function RiskGauge({ riskScore, size = 200 }) {
                 >
                     {Math.round(riskScore)}%
                 </motion.div>
-                <div className="text-sm text-dark-muted uppercase tracking-wider mt-1">Risk Score</div>
             </div>
         </div>
     );

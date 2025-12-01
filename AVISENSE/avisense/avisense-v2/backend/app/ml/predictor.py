@@ -60,12 +60,10 @@ async def run_prediction(input_data: Dict[str, float]) -> Dict:
         # Detect correlated anomalies
         correlated_anomalies = explainability_engine.detect_correlated_anomalies(anomalies)
         
-        # Calculate Unified Risk Score
-        risk_percent = explainability_engine.calculate_risk_score(
-            probabilities[1], 
-            anomalies, 
-            shap_data
-        )
+        # NOTE: risk_percent is now calculated by the caller (predict.py)
+        # This allows for hybrid risk calculation when deep learning is enabled
+        # For backward compatibility, we'll set a default based on failure probability
+        risk_percent = round(probabilities[1] * 100, 1)
         
         # Get recommended actions
         actions = get_recommended_actions(prediction_class, probabilities[1])
@@ -81,8 +79,8 @@ async def run_prediction(input_data: Dict[str, float]) -> Dict:
             'shap': shap_data,
             'risk_percent': risk_percent,
             'correlated_anomalies': correlated_anomalies,
-            'model_version': model_info.get('version', 'v1.0.0'),
-            'model_type': model_info.get('model_type', 'RandomForestClassifier')
+            'model_version': model_info.get('version') or 'v1.0.0',
+            'model_type': model_info.get('model_type') or 'RandomForestClassifier'
         }
         
         logger.info(f"Prediction: {prediction_label} (probability: {probabilities[1]:.3f})")

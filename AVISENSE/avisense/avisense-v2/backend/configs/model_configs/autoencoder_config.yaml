@@ -1,0 +1,88 @@
+# Autoencoder Model Configuration
+
+# Model Architecture
+model:
+  type: "dense_autoencoder"  # or "lstm_autoencoder", "vae"
+  
+  # Encoder layers (input -> latent)
+  encoder_dims: [128, 64, 32, 16]
+  
+  # Decoder layers (latent -> output, mirror of encoder)
+  decoder_dims: [32, 64, 128]  # Will add output layer automatically
+  
+  # Latent dimension
+  latent_dim: 16
+  
+  # Activation functions
+  activation: "relu"
+  output_activation: "linear"  # or "sigmoid" if features are normalized to [0,1]
+  
+  # Dropout for regularization
+  dropout: 0.2
+
+# Training Configuration
+training:
+  # Optimizer
+  optimizer: "adam"
+  learning_rate: 0.001
+  weight_decay: 0.00001  # L2 regularization
+  
+  # Loss function
+  loss: "mse"  # Mean Squared Error for reconstruction
+  
+  # Batch size
+  batch_size: 64
+  
+  # Epochs and early stopping
+  epochs: 100
+  early_stopping_patience: 10
+  
+  # Learning rate scheduling
+  lr_scheduler:
+    type: "ReduceLROnPlateau"
+    factor: 0.5
+    patience: 5
+    min_lr: 0.00001
+  
+  # Validation
+  validation_split: 0.15
+
+# Data Configuration
+data:
+  window_length: 64
+  stride: 4
+  scaler_type: "standard"
+  
+  # Train on healthy data only (for anomaly detection)
+  healthy_only: false  # Set to true for unsupervised anomaly detection
+  
+  # Augmentation (optional)
+  augmentation:
+    enabled: false
+    methods: ["jitter", "noise"]
+    jitter_std: 0.01
+    noise_std: 0.05
+    factor: 1
+
+# Anomaly Detection
+anomaly:
+  # Threshold for anomaly score (reconstruction error)
+  # Will be calibrated on validation set
+  threshold_percentile: 95  # Top 5% are anomalies
+  
+  # Per-feature vs global threshold
+  per_feature: true
+
+# Experiment Tracking
+mlflow:
+  experiment_name: "autoencoder_anomaly_detection"
+  run_name: "dense_ae_baseline"
+  tracking_uri: "http://localhost:5000"  # Or MLflow server URL
+
+# Model Saving
+output:
+  model_dir: "models/autoencoders"
+  save_format: "pytorch"  # or "onnx", "tensorflow"
+  save_best_only: true
+  monitor: "val_loss"
+  mode: "min"

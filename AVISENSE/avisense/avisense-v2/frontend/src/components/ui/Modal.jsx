@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
-export function Modal({ isOpen, onClose, title, children }) {
+export function Modal({ isOpen, onClose, title, children, maxWidth }) {
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -18,7 +18,7 @@ export function Modal({ isOpen, onClose, title, children }) {
 
     return createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-            <div className="relative w-full max-w-lg bg-dark-bg border border-white/10 rounded-2xl shadow-2xl animate-slide-up">
+            <div className={`relative w-full ${maxWidth || 'max-w-lg'} bg-dark-bg border border-white/10 rounded-2xl shadow-2xl animate-slide-up`}>
                 <div className="flex items-center justify-between p-6 border-b border-white/10">
                     <h2 className="text-xl font-semibold text-white">{title}</h2>
                     <button

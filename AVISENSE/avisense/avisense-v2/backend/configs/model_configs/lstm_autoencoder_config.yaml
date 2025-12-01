@@ -1,0 +1,77 @@
+# LSTM Autoencoder Configuration
+# For temporal anomaly detection in engine sensor sequences
+
+model:
+  type: "lstm_autoencoder"
+  input_dim: 24  # C-MAPSS has 21 sensors + 3 settings (24 features total)
+  hidden_dims: [128, 64]  # Stacked LSTM layers
+  latent_dim: 32
+  dropout: 0.3
+  bidirectional: true  # Better temporal context
+  activation: "relu"
+
+training:
+  batch_size: 64
+  epochs: 100
+  learning_rate: 0.001
+  optimizer: "adam"
+  loss: "mse"
+  weight_decay: 0.0001
+  
+  early_stopping:
+    enabled: true
+    patience: 15
+    min_delta: 0.0001
+    monitor: "val_loss"
+  
+  lr_scheduler:
+    enabled: true
+    type: "reduce_on_plateau"
+    factor: 0.5
+    patience: 5
+    min_lr: 0.00001
+
+data:
+  window_length: 32  # Sequence length
+  stride: 4  # Sliding window stride
+  scaler: "standard"
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+  shuffle: true
+  
+  # Data augmentation (optional)
+  augmentation:
+    enabled: false
+    jitter_std: 0.01
+    time_warp: false
+
+anomaly_detection:
+  # Threshold for anomaly classification
+  threshold_percentile: 95  # Use 95th percentile of training errors
+  
+  # Temporal analysis
+  temporal_window: 10  # Cycles to analyze for trend
+  
+evaluation:
+  metrics:
+    - "auroc"
+    - "precision_at_10"
+    - "precision_at_20"
+    - "recall_at_k"
+  
+  # Detection lead-time analysis
+  lead_time_analysis: true
+  
+# MLflow tracking
+mlflow:
+  enabled: false
+  experiment_name: "lstm_autoencoder"
+  tracking_uri: "http://localhost:5000"
+
+# Model saving
+checkpoint:
+  save_best: true
+  save_last: true
+  save_dir: "models/deep"
+  filename: "lstm_ae_v1.pt"

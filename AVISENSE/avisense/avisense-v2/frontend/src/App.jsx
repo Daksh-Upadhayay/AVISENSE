@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import EngineDetail from './pages/EngineDetail'
 import Settings from './pages/Settings'
+import { MonitoringDashboard } from './pages/MonitoringDashboard'
 import './index.css'
 
 function App() {
@@ -36,6 +37,14 @@ function App() {
           element={
             <ProtectedRoute>
               <EngineDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/monitoring"
+          element={
+            <ProtectedRoute>
+              <MonitoringDashboard />
             </ProtectedRoute>
           }
         />
