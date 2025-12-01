@@ -81,10 +81,6 @@ app.include_router(models.router, prefix="/api", tags=["Model Registry"])
 app.include_router(monitoring.router, prefix="/api", tags=["Monitoring"])
 app.include_router(feedback.router, prefix="/api", tags=["Feedback"])
 
-# Test endpoint (no auth required)
-from app.api import test_predict
-app.include_router(test_predict.router, tags=["Testing"])
-
 
 @app.get("/")
 async def root():
