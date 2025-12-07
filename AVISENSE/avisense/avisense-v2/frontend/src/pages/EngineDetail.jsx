@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Layout } from '../components/layout/Layout';
@@ -6,20 +6,22 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { MakePredictionModal } from '../components/predictions/MakePredictionModal';
 import { TemporalAnomalyChart } from '../components/predictions/TemporalAnomalyChart';
-import { ArrowLeft, Activity, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import { RULGauge } from '../components/predictions/RULGauge';
+import { RULTimeline } from '../components/predictions/RULTimeline';
+import { api } from '../lib/api';
+import { ArrowLeft, Activity, AlertTriangle, CheckCircle, Clock, Timer } from 'lucide-react';
 
 export default function EngineDetail() {
     const { id } = useParams();
     const [engine, setEngine] = useState(null);
     const [predictions, setPredictions] = useState([]);
+    const [rulHistory, setRulHistory] = useState([]);
+    const [latestRul, setLatestRul] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isPredictionModalOpen, setIsPredictionModalOpen] = useState(false);
+    const [rulLoading, setRulLoading] = useState(false);
 
-    useEffect(() => {
-        fetchData();
-    }, [id]);
-
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         try {
             // Fetch engine details
             const { data: engineData, error: engineError } = await supabase
@@ -40,15 +42,42 @@ export default function EngineDetail() {
 
             if (predError) throw predError;
             setPredictions(predData || []);
+
+            // Filter for RUL data
+            const rulData = (predData || []).filter(p => p.rul_prediction !== null && p.rul_prediction !== undefined);
+            setRulHistory(rulData);
+            if (rulData.length > 0) {
+                setLatestRul(rulData[0]);
+            }
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
             setLoading(false);
         }
-    };
+    }, [id]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     const handlePredictionComplete = () => {
         fetchData(); // Refresh history
+    };
+
+    const handleRunRUL = async () => {
+        try {
+            setRulLoading(true);
+            await api.post('/predict/rul', {
+                engine_id: id,
+                use_latest: true
+            });
+            await fetchData(); // Refresh data
+        } catch (error) {
+            console.error('RUL Prediction failed:', error);
+            alert('Failed to run RUL prediction');
+        } finally {
+            setRulLoading(false);
+        }
     };
 
     if (loading) {
@@ -94,10 +123,13 @@ export default function EngineDetail() {
                         <h1 className="text-3xl font-bold text-white mb-2">{engine.engine_id}</h1>
                         <p className="text-dark-muted">{engine.model} • {engine.serial_number}</p>
                     </div>
-                    <Button variant="primary" onClick={() => setIsPredictionModalOpen(true)} className="shadow-glow-sm">
-                        <Activity className="w-5 h-5" />
-                        Make Prediction
-                    </Button>
+                    <div className="flex gap-2">
+
+                        <Button variant="primary" onClick={() => setIsPredictionModalOpen(true)} className="shadow-glow-sm">
+                            <Activity className="w-5 h-5 mr-2" />
+                            Make Prediction
+                        </Button>
+                    </div>
                 </div>
             </div>
 
@@ -108,6 +140,8 @@ export default function EngineDetail() {
                     {predictions.length > 0 && (
                         <TemporalAnomalyChart predictions={predictions} threshold={0.5} />
                     )}
+
+
 
                     <Card>
                         <h3 className="text-lg font-semibold text-white mb-4">Prediction History</h3>

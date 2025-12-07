@@ -13,6 +13,30 @@ import {
 } from 'recharts';
 import { format } from 'date-fns';
 
+// Custom tooltip
+const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+        const data = payload[0].payload;
+        return (
+            <div className="bg-dark-surface/95 backdrop-blur-md p-3 rounded-lg shadow-xl border border-white/10">
+                <p className="text-xs text-gray-400 mb-1">{data.displayTime}</p>
+                <p className="text-sm font-semibold text-primary-400">
+                    Anomaly: {data.isRaw
+                        ? data.anomalyScore.toFixed(2)
+                        : `${(data.anomalyScore * 100).toFixed(1)}%`}
+                </p>
+                <p className="text-xs text-gray-300">
+                    Risk: {data.riskPercent}%
+                </p>
+                <p className={`text-xs font-medium mt-1 ${data.prediction === 'SAFE' ? 'text-green-400' : 'text-red-400'}`}>
+                    {data.prediction === 'SAFE' ? '✓ Healthy' : '⚠ Failure Risk'}
+                </p>
+            </div>
+        );
+    }
+    return null;
+};
+
 export function TemporalAnomalyChart({ predictions, threshold = 0.5 }) {
     if (!predictions || predictions.length === 0) {
         return (
@@ -51,29 +75,7 @@ export function TemporalAnomalyChart({ predictions, threshold = 0.5 }) {
         })
         .sort((a, b) => a.timestamp - b.timestamp);
 
-    // Custom tooltip
-    const CustomTooltip = ({ active, payload }) => {
-        if (active && payload && payload.length) {
-            const data = payload[0].payload;
-            return (
-                <div className="bg-dark-surface/95 backdrop-blur-md p-3 rounded-lg shadow-xl border border-white/10">
-                    <p className="text-xs text-gray-400 mb-1">{data.displayTime}</p>
-                    <p className="text-sm font-semibold text-primary-400">
-                        Anomaly: {data.isRaw
-                            ? data.anomalyScore.toFixed(2)
-                            : `${(data.anomalyScore * 100).toFixed(1)}%`}
-                    </p>
-                    <p className="text-xs text-gray-300">
-                        Risk: {data.riskPercent}%
-                    </p>
-                    <p className={`text-xs font-medium mt-1 ${data.prediction === 'SAFE' ? 'text-green-400' : 'text-red-400'}`}>
-                        {data.prediction === 'SAFE' ? '✓ Healthy' : '⚠ Failure Risk'}
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
+
 
     return (
         <div className="w-full glass-card p-6 mb-6">

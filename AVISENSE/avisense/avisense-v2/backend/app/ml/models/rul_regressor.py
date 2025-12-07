@@ -24,12 +24,8 @@ class RULRegressor(nn.Module):
         )
         
         # Fully connected layers for regression
-        self.fc = nn.Sequential(
-            nn.Linear(hidden_dim, 50),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(50, 1)  # Output single RUL value
-        )
+        # Simplified to match training script architecture
+        self.fc = nn.Linear(hidden_dim, 1)
         
     def forward(self, x):
         # x shape: (batch_size, seq_len, input_dim)

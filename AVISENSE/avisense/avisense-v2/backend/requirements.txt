@@ -17,3 +17,6 @@ pytest==7.4.0
 httpx==0.25.2
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
+torch>=2.0.0
+PyYAML>=6.0
+optuna

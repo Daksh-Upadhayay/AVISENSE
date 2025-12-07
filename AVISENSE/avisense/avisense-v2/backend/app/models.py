@@ -100,3 +100,25 @@ class TelemetryBulkUpload(BaseModel):
     engine_id: str
     data: List[Dict[str, float]]
     source: str = "batch_upload"
+
+
+class RULPredictionRequest(BaseModel):
+    """Request model for RUL prediction."""
+    engine_id: str = Field(..., description="Engine UUID")
+    input_sequence: Optional[List[Dict[str, float]]] = Field(None, description="Sequence of sensor values (list of dicts)")
+    use_latest: bool = Field(default=True, description="Use latest telemetry data from DB")
+    source: str = Field(default="ui", description="Source: ui, manual, automated")
+
+
+class RULPredictionResponse(BaseModel):
+    """Response model for RUL prediction."""
+    engine_id: str
+    timestamp: datetime
+    model_family: str
+    model_version: str
+    rul_prediction: float
+    rul_uncertainty: Optional[float] = 0.0
+    explainability: Optional[Dict[str, Any]] = None
+    provenance: Optional[Dict[str, str]] = None
+    saved_prediction_id: Optional[str] = None
+

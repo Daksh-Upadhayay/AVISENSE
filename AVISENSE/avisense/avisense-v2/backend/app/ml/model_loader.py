@@ -14,32 +14,51 @@ _model_info = None
 _anomaly_scorer = None  # For deep learning autoencoder
 _lstm_scorer = None     # For LSTM autoencoder
 _sequence_handler = None # For managing LSTM sequences
+_risk_config = None # Risk configuration
+_clf_model = None # Calibrated classifier
+_clf_scaler = None # Scaler for classifier
 
 
 async def load_model():
     """Load ML model and scaler from disk or Supabase Storage."""
-    global _model, _scaler, _model_info
+    global _model, _scaler, _model_info, _clf_model, _clf_scaler, _risk_config
     
     try:
-        model_path = Path(settings.MODEL_PATH)
+        model_path = Path("app/ml/models")
         
-        # Load RandomForest model
-        model_file = model_path / "avisense_model_cmapss.joblib"
-        scaler_file = model_path / "avisense_scaler_cmapss.joblib"
-        info_file = model_path / "avisense_model_cmapss_info.joblib"
+        # Load Calibrated Classifier (v2.0.0)
+        clf_file = model_path / "clf_calibrated_v2.0.0.joblib"
+        clf_scaler_file = model_path / "clf_scaler_v2.0.0.joblib"
+        info_file = model_path / "model_metadata_v2.0.0.joblib"
+        risk_config_file = Path("configs/risk_config.yaml")
         
-        logger.info(f"Loading model from {model_file}")
+        if clf_file.exists():
+            logger.info(f"Loading calibrated classifier from {clf_file}")
+            _clf_model = joblib.load(clf_file)
+            _clf_scaler = joblib.load(clf_scaler_file)
+            _model_info = joblib.load(info_file)
+            
+            # Load Risk Config
+            import yaml
+            if risk_config_file.exists():
+                with open(risk_config_file, 'r') as f:
+                    _risk_config = yaml.safe_load(f)
+                logger.info("✅ Risk config loaded")
+            
+            logger.info(f"✅ Calibrated Classifier loaded successfully (v{_model_info.get('version')})")
+            return True
+            
+        # Fallback to old model if new one doesn't exist (during migration)
+        logger.warning("New v2.0.0 models not found, falling back to legacy...")
+        old_model_path = Path(settings.MODEL_PATH)
+        model_file = old_model_path / "avisense_model_cmapss.joblib"
+        scaler_file = old_model_path / "avisense_scaler_cmapss.joblib"
+        info_file = old_model_path / "avisense_model_cmapss_info.joblib"
+        
+        logger.info(f"Loading legacy model from {model_file}")
         _model = joblib.load(model_file)
-        
-        logger.info(f"Loading scaler from {scaler_file}")
         _scaler = joblib.load(scaler_file)
-        
-        logger.info(f"Loading model info from {info_file}")
         _model_info = joblib.load(info_file)
-        
-        logger.info(f"✅ Model loaded successfully: {_model_info.get('model_type')}")
-        logger.info(f"   Safe Recall: {_model_info.get('safe_recall', 0):.1%}")
-        logger.info(f"   Failure Recall: {_model_info.get('failure_recall', 0):.1%}")
         
         return True
         
@@ -170,6 +189,18 @@ def get_model_info():
         raise RuntimeError("Model info not loaded. Call load_model() first.")
     return _model_info
 
+def get_classifier_model():
+    """Get the calibrated classifier."""
+    return _clf_model if _clf_model else _model
+
+def get_classifier_scaler():
+    """Get the classifier scaler."""
+    return _clf_scaler if _clf_scaler else _scaler
+
+def get_risk_config():
+    """Get the risk configuration."""
+    return _risk_config
+
 
 def get_lstm_scorer():
     """Get the loaded LSTM scorer."""
@@ -274,24 +305,50 @@ async def load_rul_model():
         import yaml
         
         # Paths
-        rul_model_path = Path("models/deep/rul_lstm_v1.pt")
-        config_path = Path("configs/model_configs/rul_regressor_config.yaml")
-        scaler_path = Path("data/processed/scaler.joblib")
+        rul_model_path = Path("app/ml/models/rul_lstm_v2.0.0.pt")
+        # Use training config or fallback
+        config_path = Path("configs/training_config.yaml") 
+        
+        logger.info(f"Checking RUL model path: {rul_model_path.absolute()} (Exists: {rul_model_path.exists()})")
         
         if not rul_model_path.exists():
             logger.warning(f"RUL model not found at {rul_model_path}")
             return False
             
-        # Load config
-        with open(config_path, 'r') as f:
-            config = yaml.safe_load(f)
-            
+        # Load config to get architecture params
+        # If training config exists, use it. Else fallback to hardcoded or old config.
+        if config_path.exists():
+            with open(config_path, 'r') as f:
+                full_config = yaml.safe_load(f)
+                # Extract params from metadata if available, or config
+                # Ideally we saved params in metadata. Let's load metadata.
+                meta_path = Path("app/ml/models/model_metadata_v2.0.0.joblib")
+                if meta_path.exists():
+                    meta = joblib.load(meta_path)
+                    params = meta['rul_params']
+                    input_dim = len(meta['features'])
+                    hidden_dim = params['hidden_dim']
+                    num_layers = params['num_layers']
+                    dropout = params['dropout']
+                else:
+                    # Fallback defaults
+                    input_dim = 17 # 18 features minus dropped? No, 17 features used in training script
+                    hidden_dim = 64
+                    num_layers = 2
+                    dropout = 0.2
+        else:
+             # Fallback defaults
+            input_dim = 17 
+            hidden_dim = 64
+            num_layers = 2
+            dropout = 0.2
+
         # Initialize model
         model = RULRegressor(
-            input_dim=config['model']['input_dim'],
-            hidden_dim=config['model']['hidden_dim'],
-            num_layers=config['model']['num_layers'],
-            dropout=config['model']['dropout']
+            input_dim=input_dim,
+            hidden_dim=hidden_dim,
+            num_layers=num_layers,
+            dropout=dropout
         )
         
         # Load weights
@@ -301,8 +358,10 @@ async def load_rul_model():
         
         _rul_model = model
         
-        # Load RUL-specific scaler (18 features)
-        rul_scaler_path = Path("data/processed/rul_scaler.joblib")
+        # Load RUL-specific scaler
+        rul_scaler_path = Path("app/ml/models/rul_scaler_v2.0.0.joblib")
+        logger.info(f"Checking RUL scaler path: {rul_scaler_path.absolute()} (Exists: {rul_scaler_path.exists()})")
+        
         if rul_scaler_path.exists():
             _rul_scaler = joblib.load(rul_scaler_path)
             logger.info(f"✅ RUL scaler loaded ({_rul_scaler.n_features_in_} features)")

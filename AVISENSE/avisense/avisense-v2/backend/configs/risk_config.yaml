@@ -1,0 +1,15 @@
+# Risk Calculation Configuration
+
+weights:
+  classifier: 0.5  # Weight for Calibrated Failure Probability
+  anomaly: 0.25    # Weight for Normalized Anomaly Score
+  rul: 0.25        # Weight for Normalized RUL (1 - RUL/Cap)
+
+thresholds:
+  safe_probability: 0.5    # Classifier probability below this is potentially SAFE
+  risk_safe: 30.0          # Final Risk % below this is SAFE
+  risk_prone: 60.0         # Final Risk % above this is PRONE TO FAILURE (even if classifier says safe)
+
+normalization:
+  rul_cap: 125.0           # Cap for RUL normalization
+  anomaly_max: 10.0        # Raw anomaly score that maps to 1.0 (approx)

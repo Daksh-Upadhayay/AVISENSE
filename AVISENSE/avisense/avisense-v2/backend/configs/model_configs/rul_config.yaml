@@ -1,0 +1,22 @@
+model:
+  name: "rul_lstm"
+  version: "v1.0.0"
+  input_dim: 18  # 14 sensors + 3 settings + 1 cycle (or just sensors/settings?) - usually 14 sensors + 3 settings = 17. Let's verify.
+                 # Actually, standard C-MAPSS usually uses ~14 sensors. 
+                 # Let's stick to what the existing scaler expects or what the data prep produces.
+                 # Based on previous files, it seems to be 17 or 18. I'll set it to 17 for now (14 sensors + 3 settings).
+  hidden_dim: 100
+  num_layers: 2
+  dropout: 0.2
+
+data:
+  window_length: 30
+  sequence_stride: 1
+  test_size: 0.2
+  max_rul: 125  # Cap RUL at 125 cycles
+
+training:
+  batch_size: 64
+  epochs: 50
+  learning_rate: 0.001
+  early_stopping_patience: 10

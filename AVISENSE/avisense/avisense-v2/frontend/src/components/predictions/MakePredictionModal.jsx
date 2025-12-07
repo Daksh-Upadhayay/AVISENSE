@@ -19,8 +19,6 @@ export function MakePredictionModal({ isOpen, onClose, engineId, onPredictionCom
     const [error, setError] = useState(null);
     const [formData, setFormData] = useState({});
     const [result, setResult] = useState(null); // Store result locally for display
-    const [useDeep, setUseDeep] = useState(false); // Toggle for deep learning
-    const [modelFamily, setModelFamily] = useState('dense_ae'); // Model selection
 
     // ... existing functions ...
 
@@ -32,69 +30,70 @@ export function MakePredictionModal({ isOpen, onClose, engineId, onPredictionCom
         // Real healthy sample extracted from data/processed/train.npz
         // This is an actual data point from a healthy engine in the C-MAPSS dataset
         // Increased noise for more variety each time
-        const noise = () => (Math.random() - 0.5) * 0.2; // Increased from 0.05 to 0.2
+        const noise = () => (Math.random() - 0.5) * 2.0; // Increased noise significantly (was 0.2)
 
         const safeData = {
-            setting_1: 0.0005 + (Math.random() * 0.0002), // Doubled range
-            setting_2: -0.0003 + (Math.random() * 0.0002), // Doubled range
-            setting_3: 100.0, // Constant
-            sensor_1: 518.67, // Constant
-            sensor_2: 642.33 + noise() * 2, // More variation
-            sensor_3: 1591.38 + noise() * 5, // More variation
-            sensor_4: 1400.36 + noise() * 5, // More variation
-            sensor_5: 14.62, // Constant
-            sensor_6: 21.61, // Low variance
-            sensor_7: 554.96 + noise() * 2, // More variation
-            sensor_8: 2388.04 + noise() * 10, // More variation
-            sensor_9: 9050.97 + noise() * 10, // More variation
-            sensor_10: 1.30, // Constant
-            sensor_11: 47.25 + noise() * 0.5, // More variation
-            sensor_12: 521.92 + noise() * 2, // More variation
-            sensor_13: 2388.07 + noise() * 10, // More variation
-            sensor_14: 8129.70 + noise() * 10, // More variation
-            sensor_15: 8.4148 + noise() * 0.2, // More variation
-            sensor_16: 0.03, // Constant
-            sensor_17: 392.0 + Math.floor(Math.random() * 4), // More variation (0-3)
-            sensor_18: 2388.0, // Constant
-            sensor_19: 100.0, // Constant
-            sensor_20: 39.02 + noise() * 0.3, // More variation
-            sensor_21: 23.50 + noise() * 0.3, // More variation
+            setting_1: -0.0000 + noise() * 0.002,
+            setting_2: 0.0000 + noise() * 0.0005,
+            setting_3: 100.0,
+            sensor_1: 518.67,
+            sensor_2: 642.41 + noise() * 0.5,
+            sensor_3: 1587.40 + noise(),
+            sensor_4: 1403.45 + noise(),
+            sensor_5: 14.62,
+            sensor_6: 21.61,
+            sensor_7: 553.90 + noise() * 0.5,
+            sensor_8: 2388.06 + noise() * 0.05,
+            sensor_9: 9058.21 + noise() * 2,
+            sensor_10: 1.30,
+            sensor_11: 47.37 + noise() * 0.2,
+            sensor_12: 521.86 + noise() * 0.5,
+            sensor_13: 2388.06 + noise() * 0.05,
+            sensor_14: 8139.16 + noise() * 2,
+            sensor_15: 8.4206 + noise() * 0.02,
+            sensor_16: 0.03,
+            sensor_17: 392 + Math.floor(Math.random() * 3) - 1, // 391, 392, 393
+            sensor_18: 2388.0,
+            sensor_19: 100.0,
+            sensor_20: 38.92 + noise() * 0.1,
+            sensor_21: 23.35 + noise() * 0.1,
         };
         setFormData(safeData);
     };
 
     const fillFailureData = () => {
-        // Generate data that exceeds thresholds to trigger failure prediction
-        // Increased random noise so each click generates noticeably different values
-        const noise = () => (Math.random() - 0.5) * 10; // Increased from 5 to 10
+        // Generate data that matches actual failure conditions (RUL < 5)
+        // Based on analysis of training data
+        // significantly increased noise to ensure variety
+        const noise = () => (Math.random() - 0.5) * 5.0;
 
         console.log("Generating failure data with noise...");
 
         const failureData = {
-            setting_1: 0.0035 + (Math.random() * 0.002),  // More variation
-            setting_2: 0.001 + (Math.random() * 0.0006),  // More variation
+            setting_1: -0.0001 + noise() * 0.002,
+            setting_2: -0.0000 + noise() * 0.0005,
             setting_3: 100.0,
-            sensor_1: 518.67,  // Constant
-            sensor_2: 648.0 + noise() * 2,    // Much higher than max 643.68
-            sensor_3: 1625.0 + noise() * 10,  // Much higher than max 1602.79
-            sensor_4: 1455.0 + noise() * 10,  // Much higher than max 1426.93
-            sensor_5: 14.62,  // Constant
-            sensor_6: 21.61,  // Low variance
-            sensor_7: 562.0 + noise() * 2,    // Much higher than max 555.14
-            sensor_8: 2388.04 + noise() * 0.5,
-            sensor_9: 9250.0 + noise() * 30,  // Much higher than max 9109.41
-            sensor_10: 1.30,  // Constant
-            sensor_11: 50.5 + noise() * 0.8,  // Much higher than max 48.08
-            sensor_12: 528.0 + noise() * 2,   // Much higher than max 522.89
-            sensor_13: 2388.07 + noise() * 0.5,
-            sensor_14: 8280.0 + noise() * 30, // Much higher than max 8181.91
-            sensor_15: 8.4148 + noise() * 0.1,
-            sensor_16: 0.03,  // Constant
-            sensor_17: 405.0 + Math.floor(noise() * 3),  // Much higher than max 396.31
-            sensor_18: 2388.0,  // Constant
-            sensor_19: 100.0,  // Constant
-            sensor_20: 41.5 + noise() * 0.3,  // Much higher than max 39.18
-            sensor_21: 25.0 + noise() * 0.2,  // Much higher than max 23.51
+            sensor_1: 518.67,
+            sensor_2: 643.68 + noise() * 0.8,
+            sensor_3: 1602.39 + noise() * 3,
+            sensor_4: 1428.86 + noise() * 3,
+            sensor_5: 14.62,
+            sensor_6: 21.61,
+            sensor_7: 551.51 + noise() * 0.8,
+            sensor_8: 2388.23 + noise() * 0.1,
+            sensor_9: 9099.40 + noise() * 10,
+            sensor_10: 1.30,
+            sensor_11: 48.14 + noise() * 0.3,
+            sensor_12: 519.82 + noise() * 0.8,
+            sensor_13: 2388.23 + noise() * 0.1,
+            sensor_14: 8168.19 + noise() * 10,
+            sensor_15: 8.5203 + noise() * 0.03,
+            sensor_16: 0.03,
+            sensor_17: 396 + Math.floor(Math.random() * 5) - 2, // Wider range
+            sensor_18: 2388.0,
+            sensor_19: 100.0,
+            sensor_20: 38.45 + noise() * 0.2,
+            sensor_21: 23.07 + noise() * 0.2,
         };
         console.log("Generated data:", failureData);
         setFormData(failureData);
@@ -132,13 +131,13 @@ export function MakePredictionModal({ isOpen, onClose, engineId, onPredictionCom
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={handleClose} title="Make Prediction" maxWidth="max-w-[75vw]">
-            <div className="space-y-6 max-h-[90vh] overflow-y-auto pr-2">
+        <Modal isOpen={isOpen} onClose={handleClose} title="Make Prediction" maxWidth="max-w-[70vw]">
+            <div className="space-y-4 max-h-[85vh] overflow-y-auto pr-2">
                 {/* Result Display */}
                 {result && (
-                    <div className="p-4 rounded-lg bg-dark-surface border border-white/10 animate-fade-in">
+                    <div className="p-3 rounded-lg bg-dark-surface border border-white/10 animate-fade-in">
                         <ExplainabilityDashboard predictionResult={result} />
-                        <div className="flex justify-end pt-4 sticky bottom-0 bg-dark-bg/95 backdrop-blur py-4 border-t border-white/10">
+                        <div className="flex justify-end pt-3 sticky bottom-0 bg-dark-bg/95 backdrop-blur py-3 border-t border-white/10">
                             <Button onClick={handleClose} variant="primary">
                                 Close Analysis
                             </Button>
@@ -146,7 +145,7 @@ export function MakePredictionModal({ isOpen, onClose, engineId, onPredictionCom
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
                     {error && (
                         <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                             {error}
@@ -164,16 +163,16 @@ export function MakePredictionModal({ isOpen, onClose, engineId, onPredictionCom
                         </Button>
                     </div>
 
-                    <div className="space-y-4">
-                        <h3 className="text-sm font-medium text-primary-400 uppercase tracking-wider">Operational Settings</h3>
-                        <div className="grid grid-cols-3 gap-3">
+                    <div className="space-y-2">
+                        <h3 className="text-xs font-medium text-primary-400 uppercase tracking-wider">Operational Settings</h3>
+                        <div className="grid grid-cols-3 gap-2">
                             {['setting_1', 'setting_2', 'setting_3'].map(field => (
                                 <div key={field}>
-                                    <label className="block text-xs text-dark-muted mb-1">{field}</label>
+                                    <label className="block text-xs text-dark-muted mb-0.5">{field}</label>
                                     <input
                                         type="number"
                                         step="any"
-                                        className="w-full bg-dark-surface border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-primary-500 focus:outline-none"
+                                        className="w-full bg-dark-surface border border-white/10 rounded px-2 py-1.5 text-white text-xs focus:border-primary-500 focus:outline-none"
                                         value={formData[field] || ''}
                                         onChange={(e) => handleChange(field, e.target.value)}
                                         required
@@ -183,16 +182,16 @@ export function MakePredictionModal({ isOpen, onClose, engineId, onPredictionCom
                         </div>
                     </div>
 
-                    <div className="space-y-4">
-                        <h3 className="text-sm font-medium text-primary-400 uppercase tracking-wider">Sensor Readings</h3>
-                        <div className="grid grid-cols-3 gap-3">
+                    <div className="space-y-2">
+                        <h3 className="text-xs font-medium text-primary-400 uppercase tracking-wider">Sensor Readings</h3>
+                        <div className="grid grid-cols-4 gap-2">
                             {REQUIRED_FEATURES.filter(f => f.startsWith('sensor')).map(field => (
                                 <div key={field}>
-                                    <label className="block text-xs text-dark-muted mb-1">{field}</label>
+                                    <label className="block text-xs text-dark-muted mb-0.5">{field}</label>
                                     <input
                                         type="number"
                                         step="any"
-                                        className="w-full bg-dark-surface border border-white/10 rounded-lg px-3 py-2 text-white text-sm focus:border-primary-500 focus:outline-none"
+                                        className="w-full bg-dark-surface border border-white/10 rounded px-2 py-1.5 text-white text-xs focus:border-primary-500 focus:outline-none"
                                         value={formData[field] || ''}
                                         onChange={(e) => handleChange(field, e.target.value)}
                                         required
@@ -202,7 +201,7 @@ export function MakePredictionModal({ isOpen, onClose, engineId, onPredictionCom
                         </div>
                     </div>
 
-                    <div className="pt-4 flex justify-end gap-3">
+                    <div className="pt-3 flex justify-end gap-2">
                         <Button type="button" variant="ghost" onClick={handleClose}>
                             Cancel
                         </Button>

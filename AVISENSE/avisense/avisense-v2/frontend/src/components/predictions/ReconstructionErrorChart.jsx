@@ -7,6 +7,25 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
  * Displays per-feature reconstruction errors from the autoencoder
  * Shows which sensors contributed most to the anomaly score
  */
+
+const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+        const data = payload[0].payload;
+        return (
+            <div className="bg-dark-surface border border-white/10 rounded-lg p-3 shadow-lg">
+                <p className="text-white font-semibold">{data.feature}</p>
+                <p className="text-sm text-dark-muted mt-1">
+                    Contribution: <span className="text-white">{data.percent.toFixed(2)}%</span>
+                </p>
+                <p className="text-sm text-dark-muted">
+                    Error: <span className="text-white">{data.error.toFixed(4)}</span>
+                </p>
+            </div>
+        );
+    }
+    return null;
+};
+
 export function ReconstructionErrorChart({ reconstructionErrors }) {
     if (!reconstructionErrors || Object.keys(reconstructionErrors).length === 0) {
         return (
@@ -33,23 +52,7 @@ export function ReconstructionErrorChart({ reconstructionErrors }) {
         return '#10b981'; // green
     };
 
-    const CustomTooltip = ({ active, payload }) => {
-        if (active && payload && payload.length) {
-            const data = payload[0].payload;
-            return (
-                <div className="bg-dark-surface border border-white/10 rounded-lg p-3 shadow-lg">
-                    <p className="text-white font-semibold">{data.feature}</p>
-                    <p className="text-sm text-dark-muted mt-1">
-                        Contribution: <span className="text-white">{data.percent.toFixed(2)}%</span>
-                    </p>
-                    <p className="text-sm text-dark-muted">
-                        Error: <span className="text-white">{data.error.toFixed(4)}</span>
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
+
 
     return (
         <div className="w-full h-64">

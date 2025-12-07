@@ -74,6 +74,8 @@ async def shutdown_event():
 # Include routers
 app.include_router(health.router, tags=["Health"])
 app.include_router(predict.router, tags=["Predictions"])
+from app.api import rul
+app.include_router(rul.router, tags=["RUL"])
 
 # Production integration routers
 from app.api import models, monitoring, feedback

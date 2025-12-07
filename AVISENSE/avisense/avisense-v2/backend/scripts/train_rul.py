@@ -119,16 +119,44 @@ def train(config_path, data_path, output_dir):
         if (epoch + 1) % 5 == 0:
             logger.info(f"Epoch [{epoch+1}/{epochs}], Loss: {avg_loss:.4f}, RMSE: {rmse:.4f}")
             
-    # Save model
+    # Save model with version
+    version = config['model']['version']
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
     
-    model_save_path = output_path / "rul_lstm_v1.pt"
+    model_filename = f"rul_lstm_{version}.pt"
+    model_save_path = output_path / model_filename
     torch.save(model.state_dict(), model_save_path)
     logger.info(f"Model saved to {model_save_path}")
     
-    # Save scaler if needed (assuming it's already saved during preprocessing)
-    # But we might want to save a separate scaler for RUL if we scaled it
+    # Load feature names
+    feature_file = Path(data_path).parent / "rul_features.txt"
+    if feature_file.exists():
+        with open(feature_file, 'r') as f:
+            feature_names = f.read().splitlines()
+    else:
+        logger.warning("Feature names file not found, using generic names")
+        feature_names = [f"feature_{i}" for i in range(X_train.shape[2])]
+
+    # Save metadata
+    metadata = {
+        'model_type': 'RULRegressor',
+        'version': version,
+        'input_dim': X_train.shape[2],
+        'window_length': X_train.shape[1],
+        'metrics': {'rmse': float(rmse)},
+        'feature_names': feature_names,
+        'config': config
+    }
+    
+    metadata_filename = f"rul_model_info_{version}.joblib"
+    metadata_path = output_path / metadata_filename
+    joblib.dump(metadata, metadata_path)
+    logger.info(f"Metadata saved to {metadata_path}")
+    
+    # Create symlink or copy to 'latest' if needed, or just rely on version loading
+    # For now, we'll also save as 'rul_model_info.joblib' for backward compatibility/ease
+    joblib.dump(metadata, output_path / "rul_model_info.joblib")
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

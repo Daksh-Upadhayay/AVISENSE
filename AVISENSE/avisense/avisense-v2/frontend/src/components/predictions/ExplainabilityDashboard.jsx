@@ -6,7 +6,7 @@ import { AnomalyScoreGauge } from './AnomalyScoreGauge';
 import { ReconstructionErrorChart } from './ReconstructionErrorChart';
 import { TemporalAnomalyChart } from './TemporalAnomalyChart';
 import { Card } from '../ui/Card';
-import { AlertTriangle, Info, Brain } from 'lucide-react';
+import { AlertTriangle, Info, Brain, Clock } from 'lucide-react';
 
 export function ExplainabilityDashboard({ predictionResult }) {
     if (!predictionResult) return null;
@@ -47,6 +47,19 @@ export function ExplainabilityDashboard({ predictionResult }) {
                         </div>
                     </Card>
 
+                    {/* RUL Prediction (New) */}
+                    {predictionResult.rul_prediction !== undefined && (
+                        <Card className="flex flex-col items-center justify-center p-2 bg-blue-500/10 backdrop-blur-sm border-blue-500/20 flex-1 min-h-[100px]">
+                            <div className="text-2xl font-bold text-blue-400">
+                                {Math.round(predictionResult.rul_prediction)}
+                            </div>
+                            <div className="flex items-center gap-1 mt-1">
+                                <Clock className="w-2.5 h-2.5 text-blue-400" />
+                                <h3 className="text-[10px] font-semibold text-white">Est. RUL (Cycles)</h3>
+                            </div>
+                        </Card>
+                    )}
+
                     {/* Anomaly Score (if deep learning) */}
                     {hasDeepLearning && (
                         <Card className="flex flex-col items-center justify-center p-2 bg-gradient-to-br from-purple-500/10 to-blue-500/10 backdrop-blur-sm border-purple-500/20 flex-1 min-h-[100px]">
@@ -63,16 +76,28 @@ export function ExplainabilityDashboard({ predictionResult }) {
                 </div>
 
                 {/* Middle Column: Charts (45%) */}
-                <div className="col-span-12 lg:col-span-5">
+                <div className="col-span-12 lg:col-span-5 flex flex-col gap-3">
                     {/* SHAP Feature Importance */}
-                    <Card className="p-3 bg-dark-surface/50 backdrop-blur-sm border-white/10 h-full">
+                    <Card className="p-3 bg-dark-surface/50 backdrop-blur-sm border-white/10 flex-1">
                         <div className="flex items-center justify-between mb-1">
                             <h3 className="text-xs font-semibold text-white">Risk Contributors</h3>
                         </div>
-                        <div className="h-[220px]">
+                        <div className="h-[200px]">
                             <ShapChart data={shap} />
                         </div>
                     </Card>
+
+                    {/* Reconstruction Errors (for VAE) */}
+                    {reconstruction_errors && (
+                        <Card className="p-3 bg-dark-surface/50 backdrop-blur-sm border-white/10 flex-1">
+                            <div className="flex items-center justify-between mb-1">
+                                <h3 className="text-xs font-semibold text-white">Anomaly Sources (Reconstruction Error)</h3>
+                            </div>
+                            <div className="h-[200px]">
+                                <ReconstructionErrorChart reconstructionErrors={reconstruction_errors} />
+                            </div>
+                        </Card>
+                    )}
                 </div>
 
                 {/* Right Column: Sensor Health (30%) */}
