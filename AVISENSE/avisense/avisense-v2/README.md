@@ -214,14 +214,3 @@ See [docs/DEPLOY.md](docs/DEPLOY.md) for detailed deployment instructions.
 - [ ] E2E tests
 - [ ] CI/CD pipeline
 
-## 📄 License
-
-MIT
-
-## 🤝 Contributing
-
-Contributions welcome! Please read our contributing guidelines first.
-
-## 📧 Support
-
-For support, email support@avisense.com or open an issue.

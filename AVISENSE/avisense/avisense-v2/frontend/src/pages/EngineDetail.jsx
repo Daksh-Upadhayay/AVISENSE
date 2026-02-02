@@ -179,20 +179,6 @@ export default function EngineDetail() {
                                             </div>
                                             {/* Risk percentage removed as requested */}
                                         </div>
-
-                                        {/* Anomalies Preview */}
-                                        {pred.anomalies && pred.anomalies.length > 0 && (
-                                            <div className="mt-3 pt-3 border-t border-white/10">
-                                                <p className="text-xs text-red-300 mb-2">Detected Anomalies:</p>
-                                                <div className="flex flex-wrap gap-2">
-                                                    {pred.anomalies.map((anomaly, idx) => (
-                                                        <span key={idx} className="px-2 py-1 rounded text-xs bg-red-500/10 text-red-300 border border-red-500/20">
-                                                            {anomaly.sensor}: {anomaly.value.toFixed(2)}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
                                     </div>
                                 ))}
                             </div>

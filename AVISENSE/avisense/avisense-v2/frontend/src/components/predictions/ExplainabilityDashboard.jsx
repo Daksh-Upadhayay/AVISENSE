@@ -33,8 +33,8 @@ export function ExplainabilityDashboard({ predictionResult }) {
 
         <div className="animate-fade-in h-full">
             <div className="grid grid-cols-12 gap-3 h-full">
-                {/* Left Column: Key Metrics (25%) */}
-                <div className="col-span-12 lg:col-span-3 space-y-2 flex flex-col">
+                {/* Left Column: Key Metrics */}
+                <div className="col-span-12 lg:col-span-5 space-y-2 flex flex-col">
                     {/* Risk Gauge */}
                     <Card className="flex flex-col items-center justify-center p-2 bg-dark-surface/50 backdrop-blur-sm border-white/10 flex-1 min-h-[100px]">
                         <RiskGauge riskScore={riskScore} size={110} />
@@ -75,33 +75,8 @@ export function ExplainabilityDashboard({ predictionResult }) {
                     )}
                 </div>
 
-                {/* Middle Column: Charts (45%) */}
-                <div className="col-span-12 lg:col-span-5 flex flex-col gap-3">
-                    {/* SHAP Feature Importance */}
-                    <Card className="p-3 bg-dark-surface/50 backdrop-blur-sm border-white/10 flex-1">
-                        <div className="flex items-center justify-between mb-1">
-                            <h3 className="text-xs font-semibold text-white">Risk Contributors</h3>
-                        </div>
-                        <div className="h-[200px]">
-                            <ShapChart data={shap} />
-                        </div>
-                    </Card>
-
-                    {/* Reconstruction Errors (for VAE) */}
-                    {reconstruction_errors && (
-                        <Card className="p-3 bg-dark-surface/50 backdrop-blur-sm border-white/10 flex-1">
-                            <div className="flex items-center justify-between mb-1">
-                                <h3 className="text-xs font-semibold text-white">Anomaly Sources (Reconstruction Error)</h3>
-                            </div>
-                            <div className="h-[200px]">
-                                <ReconstructionErrorChart reconstructionErrors={reconstruction_errors} />
-                            </div>
-                        </Card>
-                    )}
-                </div>
-
-                {/* Right Column: Sensor Health (30%) */}
-                <div className="col-span-12 lg:col-span-4 flex flex-col">
+                {/* Right Column: Sensor Health */}
+                <div className="col-span-12 lg:col-span-7 flex flex-col">
                     <Card className="p-3 bg-dark-surface/50 backdrop-blur-sm border-white/10 h-full flex flex-col">
                         <h3 className="text-xs font-semibold text-white mb-2">Sensor Health Map</h3>
                         <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar">

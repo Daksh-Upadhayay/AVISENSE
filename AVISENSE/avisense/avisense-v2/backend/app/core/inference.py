@@ -8,6 +8,7 @@ from app.ml.model_loader import (
     get_risk_config, get_model_info,
     get_anomaly_scorer, is_autoencoder_loaded
 )
+from app.ml.anomaly import detect_anomalies
 from app.config import settings
 
 logger = logging.getLogger(__name__)
@@ -102,25 +103,32 @@ async def run_deterministic_inference(input_data: dict, source: str = "api"):
         rul_value = max(0, min(rul_pred, rul_cap))
         results["rul_prediction"] = float(rul_value)
         
-        # 5. Run Anomaly Detection (VAE/AE)
-        # TODO: Re-enable with proper integration in Step F (Explainability)
-        # Current issue: Dimension mismatch between input and VAE model
+        # 5. Run Anomaly Detection
+        # Use threshold-based anomaly detection
         anomaly_score = 0.0
         norm_anomaly = 0.0
-        results["anomalies"] = []
         
-        # DISABLED TEMPORARILY
+        # Detect anomalies based on sensor thresholds
+        anomalies_detected = detect_anomalies(input_data)
+        results["anomalies"] = anomalies_detected
+        
+        # Calculate normalized anomaly score based on detected anomalies
+        if anomalies_detected:
+            # Average severity score from all detected anomalies
+            avg_anomaly_score = sum(a.get('score', 0) for a in anomalies_detected) / len(anomalies_detected)
+            norm_anomaly = min(1.0, avg_anomaly_score)
+            anomaly_score = norm_anomaly * 100.0
+        
+        results["anomaly_score"] = float(anomaly_score)
+        results["anomaly_score_normalized"] = float(norm_anomaly)
+        
+        # VAE/AE-based detection disabled temporarily due to dimension mismatch
+        # TODO: Re-enable with proper integration in Step F (Explainability)
         # if is_autoencoder_loaded():
         #     scorer = get_anomaly_scorer()
         #     ae_result = scorer.score(input_data, return_details=True)
-        #     anomaly_score = ae_result['anomaly_score']
-        #     if anomaly_score < 10.0:
-        #         norm_anomaly = min(0.05, anomaly_score / 200.0)
-        #     else:
-        #         norm_anomaly = min(1.0, 0.5 + (anomaly_score - 10.0) / 200.0)
-        #     results["anomaly_score"] = float(anomaly_score)
-        #     results["anomaly_score_normalized"] = float(norm_anomaly)
-        #     results["anomalies"] = ae_result.get("anomalies", [])
+        #     ae_anomaly_score = ae_result['anomaly_score']
+        #     # Blend with threshold-based detection
             
         # 6. Calculate Risk %
         # Formula: w_clf * prob + w_anom * score + w_rul * (1 - norm_rul)
