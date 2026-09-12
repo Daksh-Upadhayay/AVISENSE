@@ -1,0 +1,9 @@
+# API only. The frontend runs with `npm run dev`; the database is Supabase
+# (hosted, or local via `supabase start`).
+services:
+  api:
+    build: ./backend
+    env_file: ./backend/.env
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
