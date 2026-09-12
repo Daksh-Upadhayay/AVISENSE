@@ -1,0 +1,5627 @@
+{
+ "version": "3.0.0",
+ "trained_at": "2026-09-12T21:19:39+00:00",
+ "algorithm": {
+  "rul": "LightGBM gradient-boosted trees (L2 loss), RUL target capped at 125 cycles",
+  "interval": "80% split-conformal interval, calibrated per band of predicted RUL on validation engines within 150 cycles of failure",
+  "failure": "LightGBM binary classifier for failure within 30 cycles",
+  "explanations": "Exact TreeSHAP contributions of the RUL model, summed per sensor"
+ },
+ "training_data": {
+  "source": "NASA C-MAPSS turbofan degradation simulation (Saxena et al., 2008)",
+  "subsets": {
+   "FD001": {
+    "conditions": 1,
+    "fault_modes": "HPC degradation"
+   },
+   "FD002": {
+    "conditions": 6,
+    "fault_modes": "HPC degradation"
+   },
+   "FD003": {
+    "conditions": 1,
+    "fault_modes": "HPC and fan degradation"
+   },
+   "FD004": {
+    "conditions": 6,
+    "fault_modes": "HPC and fan degradation"
+   }
+  },
+  "fit_engines": 567,
+  "validation_engines": 142,
+  "rows": 160359
+ },
+ "feature_description": "Each sensor is converted to a z-score against the healthy early-life baseline of its operating regime (6 regimes from altitude, Mach and throttle). Per sensor: 10- and 30-cycle rolling means, 20-cycle trend slope, and drift from the engine's own first recorded cycles. Plus cycles in service.",
+ "features": [
+  "cycle",
+  "sensor_2__mean10",
+  "sensor_2__mean30",
+  "sensor_2__slope20",
+  "sensor_2__drift",
+  "sensor_3__mean10",
+  "sensor_3__mean30",
+  "sensor_3__slope20",
+  "sensor_3__drift",
+  "sensor_4__mean10",
+  "sensor_4__mean30",
+  "sensor_4__slope20",
+  "sensor_4__drift",
+  "sensor_7__mean10",
+  "sensor_7__mean30",
+  "sensor_7__slope20",
+  "sensor_7__drift",
+  "sensor_8__mean10",
+  "sensor_8__mean30",
+  "sensor_8__slope20",
+  "sensor_8__drift",
+  "sensor_9__mean10",
+  "sensor_9__mean30",
+  "sensor_9__slope20",
+  "sensor_9__drift",
+  "sensor_11__mean10",
+  "sensor_11__mean30",
+  "sensor_11__slope20",
+  "sensor_11__drift",
+  "sensor_12__mean10",
+  "sensor_12__mean30",
+  "sensor_12__slope20",
+  "sensor_12__drift",
+  "sensor_13__mean10",
+  "sensor_13__mean30",
+  "sensor_13__slope20",
+  "sensor_13__drift",
+  "sensor_14__mean10",
+  "sensor_14__mean30",
+  "sensor_14__slope20",
+  "sensor_14__drift",
+  "sensor_15__mean10",
+  "sensor_15__mean30",
+  "sensor_15__slope20",
+  "sensor_15__drift",
+  "sensor_17__mean10",
+  "sensor_17__mean30",
+  "sensor_17__slope20",
+  "sensor_17__drift",
+  "sensor_20__mean10",
+  "sensor_20__mean30",
+  "sensor_20__slope20",
+  "sensor_20__drift",
+  "sensor_21__mean10",
+  "sensor_21__mean30",
+  "sensor_21__slope20",
+  "sensor_21__drift"
+ ],
+ "normalizer": {
+  "centroids": [
+   [
+    -0.0,
+    -0.0,
+    100.0
+   ],
+   [
+    10.0,
+    0.25,
+    100.0
+   ],
+   [
+    20.0,
+    0.7,
+    100.0
+   ],
+   [
+    25.0,
+    0.62,
+    60.0
+   ],
+   [
+    35.0,
+    0.84,
+    100.0
+   ],
+   [
+    42.0,
+    0.84,
+    100.0
+   ]
+  ],
+  "mean": [
+   [
+    642.3052915013831,
+    1585.8556256761613,
+    1401.2323055655716,
+    553.9630628681325,
+    2388.030949633344,
+    9054.734103858596,
+    47.308549104459736,
+    521.9118583964442,
+    2388.0298413270557,
+    8136.659653804552,
+    8.412082942661394,
+    391.9897824257723,
+    38.95141363144626,
+    23.36989178987862
+   ],
+   [
+    604.539848877374,
+    1497.6938773747854,
+    1303.9186096718495,
+    394.69094127806665,
+    2318.8640846286735,
+    8776.777132987898,
+    45.26043609671851,
+    371.7562521588941,
+    2388.06466753022,
+    8129.787392055272,
+    8.632573445595844,
+    368.55656303972364,
+    28.619257340241813,
+    17.171121891191696
+   ],
+   [
+    607.2162765496313,
+    1481.3024273948818,
+    1246.5819115734687,
+    334.71403120936304,
+    2323.914425661045,
+    8721.023203294306,
+    44.239289120069316,
+    315.0473775465974,
+    2388.044018205452,
+    8060.098912006938,
+    9.202118205461616,
+    364.2522756827048,
+    24.527078456870402,
+    14.71471647160818
+   ],
+   [
+    536.6490164684351,
+    1259.076944190302,
+    1044.7357227813352,
+    175.51716376944196,
+    1915.3245837145455,
+    8008.430370539811,
+    36.61665599268064,
+    164.658472095151,
+    2028.2172644098807,
+    7872.971006404392,
+    10.875455718206764,
+    306.42223238792315,
+    14.30621225983532,
+    8.5853475297347
+   ],
+   [
+    555.4695369950065,
+    1362.8301679527922,
+    1125.314807081252,
+    194.58211529732168,
+    2222.9304266908766,
+    8348.026019064933,
+    41.781048570131674,
+    183.14519291874734,
+    2388.019264639134,
+    8066.581965501602,
+    9.302547480708135,
+    333.21470721743077,
+    14.874466636404891,
+    8.924917476168865
+   ],
+   [
+    549.3849555724787,
+    1350.3313328255897,
+    1121.3607514597622,
+    138.70617669459278,
+    2211.9036303630437,
+    8319.047118558,
+    41.93448083269857,
+    130.5916273165777,
+    2387.979339933988,
+    8083.156004061942,
+    9.349385173902016,
+    329.95836506727596,
+    10.61821274435139,
+    6.370484945417612
+   ]
+  ],
+  "std": [
+   [
+    0.3868861373742402,
+    4.959289657089593,
+    6.355377581792184,
+    1.0282841457610836,
+    0.11160097654442688,
+    8.86051092160229,
+    0.1855754517978952,
+    0.9296901619540598,
+    0.11127915218816384,
+    7.938214633597013,
+    0.02930534916273243,
+    1.2363514518098224,
+    0.13747118317805818,
+    0.0831852610639775
+   ],
+   [
+    0.3776735707450645,
+    4.760469263470976,
+    6.2779011116380135,
+    0.7496043711884007,
+    0.08584980913884391,
+    8.208752815255734,
+    0.18444644759485088,
+    0.6741921119187048,
+    0.08811949219248238,
+    7.70354921925007,
+    0.027903761615730042,
+    1.1928815639643582,
+    0.11694315121193787,
+    0.0700308121802625
+   ],
+   [
+    0.3875506961321752,
+    4.934085010210921,
+    6.193947339573535,
+    0.8347582727782898,
+    0.0844875780551644,
+    7.986575679391143,
+    0.18534733401085104,
+    0.7543067026847747,
+    0.0866334450898532,
+    7.091888849913722,
+    0.029095836259395474,
+    1.1944053139692816,
+    0.1178008075330675,
+    0.06999538028622036
+   ],
+   [
+    0.3297301187917122,
+    4.643711750642134,
+    5.371295438534093,
+    0.5162585397438337,
+    0.10762696746804275,
+    6.6754324537504734,
+    0.16110161606360557,
+    0.42415358738286674,
+    0.11439294641666237,
+    5.938719930471954,
+    0.031465245160803464,
+    1.1149158198844378,
+    0.10704087151833865,
+    0.0619772851568746
+   ],
+   [
+    0.3615686355692016,
+    4.79860038973281,
+    5.695500999517201,
+    0.5836501132568318,
+    0.12284677248516544,
+    7.93007072999097,
+    0.17251691819776882,
+    0.5134190189055274,
+    0.13101199855545356,
+    7.273545521459019,
+    0.029813532569083652,
+    1.1629480840083073,
+    0.10556217078547686,
+    0.06267585046915954
+   ],
+   [
+    0.3627244749648931,
+    4.822147893611439,
+    5.930942248259608,
+    0.5261280922834877,
+    0.13975178900728852,
+    8.547132984414743,
+    0.18351329529866678,
+    0.45167400936842966,
+    0.14981115626296218,
+    7.89285872568707,
+    0.030596735395232378,
+    1.1956564224460722,
+    0.10242554397686873,
+    0.062030328219393346
+   ]
+  ],
+  "direction": [
+   1.0,
+   1.0,
+   1.0,
+   -1.0,
+   1.0,
+   1.0,
+   1.0,
+   -1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   -1.0,
+   -1.0
+  ],
+  "noise_level": [
+   0.8400404372349427,
+   0.8950866776997392,
+   0.8698001178193445,
+   1.1776838365284594,
+   1.1023502814557733,
+   1.0831882821117604,
+   0.8651444959829512,
+   1.2446755836856602,
+   1.1013895309072035,
+   0.9989105336051736,
+   0.9891882671987717,
+   0.8475825521912347,
+   0.9305992221711572,
+   0.8962474375610233
+  ],
+  "failure_level": [
+   2.502764205857718,
+   2.5840394262271458,
+   3.3390620347714646,
+   1.6948998813454943,
+   1.9533879249978092,
+   3.7386322454327083,
+   3.5942253866982923,
+   1.7446755836856602,
+   1.9621652130131118,
+   3.184217253715938,
+   3.260798362584386,
+   2.768034637685602,
+   2.2048254842555335,
+   2.2035153542287356
+  ],
+  "sensors": [
+   "sensor_2",
+   "sensor_3",
+   "sensor_4",
+   "sensor_7",
+   "sensor_8",
+   "sensor_9",
+   "sensor_11",
+   "sensor_12",
+   "sensor_13",
+   "sensor_14",
+   "sensor_15",
+   "sensor_17",
+   "sensor_20",
+   "sensor_21"
+  ]
+ },
+ "policy": {
+  "horizon": 30,
+  "rul_cap": 125,
+  "alert_threshold": 0.4777,
+  "watch_rul": 60,
+  "interval_level": 0.8,
+  "interval_bins": [
+   {
+    "from": 0,
+    "to": 20,
+    "low": -4.55,
+    "high": 3.36,
+    "rows": 2770
+   },
+   {
+    "from": 20,
+    "to": 40,
+    "low": -6.63,
+    "high": 5.82,
+    "rows": 2862
+   },
+   {
+    "from": 40,
+    "to": 60,
+    "low": -9.35,
+    "high": 9.02,
+    "rows": 2600
+   },
+   {
+    "from": 60,
+    "to": 80,
+    "low": -13.58,
+    "high": 10.66,
+    "rows": 2483
+   },
+   {
+    "from": 80,
+    "to": 100,
+    "low": -19.73,
+    "high": 19.39,
+    "rows": 2873
+   },
+   {
+    "from": 100,
+    "to": 115,
+    "low": -22.79,
+    "high": 16.06,
+    "rows": 3272
+   },
+   {
+    "from": 115,
+    "to": 126,
+    "low": -16.23,
+    "high": 7.0,
+    "rows": 4506
+   }
+  ]
+ },
+ "metrics": {
+  "overall": {
+   "rmse": 10.87,
+   "mae": 7.38,
+   "nasa_score": 1532.5,
+   "interval_coverage": 0.806,
+   "interval_width": 22.4,
+   "pr_auc": 0.959,
+   "roc_auc": 0.999,
+   "brier": 0.0039,
+   "recall": 0.889,
+   "precision": 0.893,
+   "engines": 707
+  },
+  "per_dataset": {
+   "FD001": {
+    "rmse": 10.86,
+    "mae": 7.48,
+    "nasa_score": 186.5,
+    "interval_coverage": 0.84,
+    "interval_width": 23.6,
+    "pr_auc": 0.976,
+    "roc_auc": 0.999,
+    "brier": 0.0033,
+    "recall": 0.931,
+    "precision": 0.904,
+    "engines": 100
+   },
+   "FD002": {
+    "rmse": 10.8,
+    "mae": 7.48,
+    "nasa_score": 548.2,
+    "interval_coverage": 0.811,
+    "interval_width": 22.3,
+    "pr_auc": 0.974,
+    "roc_auc": 0.999,
+    "brier": 0.0042,
+    "recall": 0.889,
+    "precision": 0.927,
+    "engines": 259
+   },
+   "FD003": {
+    "rmse": 10.76,
+    "mae": 7.5,
+    "nasa_score": 223.3,
+    "interval_coverage": 0.83,
+    "interval_width": 23.2,
+    "pr_auc": 0.982,
+    "roc_auc": 1.0,
+    "brier": 0.0021,
+    "recall": 0.938,
+    "precision": 0.881,
+    "engines": 100
+   },
+   "FD004": {
+    "rmse": 10.98,
+    "mae": 7.18,
+    "nasa_score": 574.4,
+    "interval_coverage": 0.778,
+    "interval_width": 21.8,
+    "pr_auc": 0.921,
+    "roc_auc": 0.998,
+    "brier": 0.0046,
+    "recall": 0.858,
+    "precision": 0.853,
+    "engines": 248
+   }
+  },
+  "error_by_rul": [
+   {
+    "band": "0\u201325",
+    "rows": 1662,
+    "mae": 3.34,
+    "bias": 1.61
+   },
+   {
+    "band": "25\u201350",
+    "rows": 4609,
+    "mae": 4.75,
+    "bias": 1.91
+   },
+   {
+    "band": "50\u201375",
+    "rows": 6858,
+    "mae": 9.52,
+    "bias": 5.34
+   },
+   {
+    "band": "75\u2013100",
+    "rows": 9483,
+    "mae": 12.72,
+    "bias": 7.92
+   },
+   {
+    "band": "100\u2013125",
+    "rows": 12547,
+    "mae": 9.01,
+    "bias": -1.1
+   }
+  ],
+  "reliability": [
+   {
+    "predicted": 0.001,
+    "observed": 0.001,
+    "rows": 101551
+   },
+   {
+    "predicted": 0.146,
+    "observed": 0.162,
+    "rows": 308
+   },
+   {
+    "predicted": 0.246,
+    "observed": 0.262,
+    "rows": 191
+   },
+   {
+    "predicted": 0.349,
+    "observed": 0.405,
+    "rows": 168
+   },
+   {
+    "predicted": 0.447,
+    "observed": 0.521,
+    "rows": 146
+   },
+   {
+    "predicted": 0.553,
+    "observed": 0.566,
+    "rows": 129
+   },
+   {
+    "predicted": 0.65,
+    "observed": 0.581,
+    "rows": 117
+   },
+   {
+    "predicted": 0.752,
+    "observed": 0.76,
+    "rows": 175
+   },
+   {
+    "predicted": 0.852,
+    "observed": 0.822,
+    "rows": 219
+   },
+   {
+    "predicted": 0.982,
+    "observed": 0.959,
+    "rows": 1893
+   }
+  ],
+  "test_scatter": [
+   {
+    "dataset": "FD001",
+    "true": 112,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 98,
+    "predicted": 114.6,
+    "low": 91.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 69,
+    "predicted": 48.1,
+    "low": 38.8,
+    "high": 57.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 82,
+    "predicted": 56.9,
+    "low": 47.6,
+    "high": 65.9
+   },
+   {
+    "dataset": "FD001",
+    "true": 91,
+    "predicted": 99.9,
+    "low": 80.1,
+    "high": 119.3
+   },
+   {
+    "dataset": "FD001",
+    "true": 93,
+    "predicted": 109.7,
+    "low": 86.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 91,
+    "predicted": 114.7,
+    "low": 91.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 95,
+    "predicted": 93.1,
+    "low": 73.3,
+    "high": 112.5
+   },
+   {
+    "dataset": "FD001",
+    "true": 111,
+    "predicted": 122.8,
+    "low": 106.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 96,
+    "predicted": 90.3,
+    "low": 70.5,
+    "high": 109.6
+   },
+   {
+    "dataset": "FD001",
+    "true": 97,
+    "predicted": 102.9,
+    "low": 80.1,
+    "high": 118.9
+   },
+   {
+    "dataset": "FD001",
+    "true": 124,
+    "predicted": 115.0,
+    "low": 98.8,
+    "high": 122.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 95,
+    "predicted": 87.8,
+    "low": 68.1,
+    "high": 107.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 107,
+    "predicted": 117.9,
+    "low": 101.6,
+    "high": 124.9
+   },
+   {
+    "dataset": "FD001",
+    "true": 83,
+    "predicted": 87.7,
+    "low": 68.0,
+    "high": 107.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 84,
+    "predicted": 95.8,
+    "low": 76.0,
+    "high": 115.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 50,
+    "predicted": 45.9,
+    "low": 36.5,
+    "high": 54.9
+   },
+   {
+    "dataset": "FD001",
+    "true": 28,
+    "predicted": 27.5,
+    "low": 20.9,
+    "high": 33.3
+   },
+   {
+    "dataset": "FD001",
+    "true": 87,
+    "predicted": 85.2,
+    "low": 65.4,
+    "high": 104.6
+   },
+   {
+    "dataset": "FD001",
+    "true": 16,
+    "predicted": 14.5,
+    "low": 10.0,
+    "high": 17.9
+   },
+   {
+    "dataset": "FD001",
+    "true": 57,
+    "predicted": 63.1,
+    "low": 49.6,
+    "high": 73.8
+   },
+   {
+    "dataset": "FD001",
+    "true": 111,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 113,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 20,
+    "predicted": 18.8,
+    "low": 14.2,
+    "high": 22.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 116.7,
+    "low": 100.5,
+    "high": 123.7
+   },
+   {
+    "dataset": "FD001",
+    "true": 119,
+    "predicted": 114.8,
+    "low": 92.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 66,
+    "predicted": 78.5,
+    "low": 64.9,
+    "high": 89.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 97,
+    "predicted": 100.6,
+    "low": 77.8,
+    "high": 116.7
+   },
+   {
+    "dataset": "FD001",
+    "true": 90,
+    "predicted": 86.8,
+    "low": 67.1,
+    "high": 106.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 115,
+    "predicted": 93.7,
+    "low": 73.9,
+    "high": 113.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 8,
+    "predicted": 9.6,
+    "low": 5.1,
+    "high": 13.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 48,
+    "predicted": 48.5,
+    "low": 39.2,
+    "high": 57.5
+   },
+   {
+    "dataset": "FD001",
+    "true": 106,
+    "predicted": 118.3,
+    "low": 102.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 7,
+    "predicted": 7.1,
+    "low": 2.6,
+    "high": 10.5
+   },
+   {
+    "dataset": "FD001",
+    "true": 11,
+    "predicted": 7.9,
+    "low": 3.3,
+    "high": 11.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 19,
+    "predicted": 21.0,
+    "low": 14.3,
+    "high": 26.8
+   },
+   {
+    "dataset": "FD001",
+    "true": 21,
+    "predicted": 25.4,
+    "low": 18.8,
+    "high": 31.3
+   },
+   {
+    "dataset": "FD001",
+    "true": 50,
+    "predicted": 50.4,
+    "low": 41.0,
+    "high": 59.4
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 28,
+    "predicted": 24.3,
+    "low": 17.7,
+    "high": 30.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 18,
+    "predicted": 20.2,
+    "low": 13.6,
+    "high": 26.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 10,
+    "predicted": 13.7,
+    "low": 9.2,
+    "high": 17.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 59,
+    "predicted": 45.9,
+    "low": 36.5,
+    "high": 54.9
+   },
+   {
+    "dataset": "FD001",
+    "true": 109,
+    "predicted": 116.2,
+    "low": 100.0,
+    "high": 123.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 114,
+    "predicted": 100.7,
+    "low": 77.9,
+    "high": 116.8
+   },
+   {
+    "dataset": "FD001",
+    "true": 47,
+    "predicted": 38.1,
+    "low": 31.5,
+    "high": 44.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 120.5,
+    "low": 104.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 92,
+    "predicted": 92.5,
+    "low": 72.8,
+    "high": 111.9
+   },
+   {
+    "dataset": "FD001",
+    "true": 21,
+    "predicted": 18.4,
+    "low": 13.8,
+    "high": 21.7
+   },
+   {
+    "dataset": "FD001",
+    "true": 79,
+    "predicted": 100.1,
+    "low": 77.3,
+    "high": 116.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 114,
+    "predicted": 83.7,
+    "low": 63.9,
+    "high": 103.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 29,
+    "predicted": 25.4,
+    "low": 18.7,
+    "high": 31.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 26,
+    "predicted": 27.2,
+    "low": 20.6,
+    "high": 33.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 97,
+    "predicted": 105.9,
+    "low": 83.1,
+    "high": 121.9
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 122.0,
+    "low": 105.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 15,
+    "predicted": 14.9,
+    "low": 10.3,
+    "high": 18.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 103,
+    "predicted": 99.0,
+    "low": 79.3,
+    "high": 118.4
+   },
+   {
+    "dataset": "FD001",
+    "true": 37,
+    "predicted": 32.0,
+    "low": 25.3,
+    "high": 37.8
+   },
+   {
+    "dataset": "FD001",
+    "true": 114,
+    "predicted": 116.6,
+    "low": 100.4,
+    "high": 123.6
+   },
+   {
+    "dataset": "FD001",
+    "true": 100,
+    "predicted": 92.9,
+    "low": 73.1,
+    "high": 112.3
+   },
+   {
+    "dataset": "FD001",
+    "true": 21,
+    "predicted": 21.6,
+    "low": 15.0,
+    "high": 27.4
+   },
+   {
+    "dataset": "FD001",
+    "true": 54,
+    "predicted": 52.8,
+    "low": 43.5,
+    "high": 61.8
+   },
+   {
+    "dataset": "FD001",
+    "true": 72,
+    "predicted": 94.1,
+    "low": 74.4,
+    "high": 113.5
+   },
+   {
+    "dataset": "FD001",
+    "true": 28,
+    "predicted": 29.9,
+    "low": 23.3,
+    "high": 35.7
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 122.7,
+    "low": 106.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 14,
+    "predicted": 14.7,
+    "low": 10.1,
+    "high": 18.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 77,
+    "predicted": 116.3,
+    "low": 100.1,
+    "high": 123.3
+   },
+   {
+    "dataset": "FD001",
+    "true": 8,
+    "predicted": 9.4,
+    "low": 4.9,
+    "high": 12.8
+   },
+   {
+    "dataset": "FD001",
+    "true": 121,
+    "predicted": 114.7,
+    "low": 91.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 94,
+    "predicted": 86.8,
+    "low": 67.1,
+    "high": 106.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 118,
+    "predicted": 104.1,
+    "low": 81.3,
+    "high": 120.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 50,
+    "predicted": 52.9,
+    "low": 43.5,
+    "high": 61.9
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 97.6,
+    "low": 77.9,
+    "high": 117.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 121.2,
+    "low": 104.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 113,
+    "predicted": 95.8,
+    "low": 76.1,
+    "high": 115.2
+   },
+   {
+    "dataset": "FD001",
+    "true": 10,
+    "predicted": 7.1,
+    "low": 2.6,
+    "high": 10.5
+   },
+   {
+    "dataset": "FD001",
+    "true": 34,
+    "predicted": 31.9,
+    "low": 25.3,
+    "high": 37.8
+   },
+   {
+    "dataset": "FD001",
+    "true": 107,
+    "predicted": 116.0,
+    "low": 99.8,
+    "high": 123.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 63,
+    "predicted": 62.2,
+    "low": 48.6,
+    "high": 72.8
+   },
+   {
+    "dataset": "FD001",
+    "true": 90,
+    "predicted": 94.0,
+    "low": 74.3,
+    "high": 113.4
+   },
+   {
+    "dataset": "FD001",
+    "true": 8,
+    "predicted": 7.7,
+    "low": 3.2,
+    "high": 11.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 9,
+    "predicted": 9.5,
+    "low": 5.0,
+    "high": 12.9
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 116.0,
+    "low": 99.7,
+    "high": 123.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 58,
+    "predicted": 59.1,
+    "low": 49.7,
+    "high": 68.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 118,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 89,
+    "predicted": 99.8,
+    "low": 80.0,
+    "high": 119.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 116,
+    "predicted": 113.0,
+    "low": 90.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 115,
+    "predicted": 114.6,
+    "low": 91.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 122.3,
+    "low": 106.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 28,
+    "predicted": 23.5,
+    "low": 16.9,
+    "high": 29.3
+   },
+   {
+    "dataset": "FD001",
+    "true": 38,
+    "predicted": 37.6,
+    "low": 31.0,
+    "high": 43.5
+   },
+   {
+    "dataset": "FD001",
+    "true": 20,
+    "predicted": 24.6,
+    "low": 17.9,
+    "high": 30.4
+   },
+   {
+    "dataset": "FD001",
+    "true": 85,
+    "predicted": 60.4,
+    "low": 46.8,
+    "high": 71.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 55,
+    "predicted": 57.5,
+    "low": 48.1,
+    "high": 66.5
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 97.8,
+    "low": 78.0,
+    "high": 117.1
+   },
+   {
+    "dataset": "FD001",
+    "true": 125,
+    "predicted": 117.3,
+    "low": 101.1,
+    "high": 124.3
+   },
+   {
+    "dataset": "FD001",
+    "true": 82,
+    "predicted": 90.3,
+    "low": 70.6,
+    "high": 109.7
+   },
+   {
+    "dataset": "FD001",
+    "true": 59,
+    "predicted": 61.1,
+    "low": 47.6,
+    "high": 71.8
+   },
+   {
+    "dataset": "FD001",
+    "true": 117,
+    "predicted": 112.9,
+    "low": 90.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD001",
+    "true": 20,
+    "predicted": 20.7,
+    "low": 14.1,
+    "high": 26.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 18,
+    "predicted": 16.5,
+    "low": 12.0,
+    "high": 19.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 79,
+    "predicted": 118.6,
+    "low": 102.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 106,
+    "predicted": 93.8,
+    "low": 74.1,
+    "high": 113.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 110,
+    "predicted": 86.1,
+    "low": 66.4,
+    "high": 105.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 15,
+    "predicted": 13.1,
+    "low": 8.6,
+    "high": 16.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 121.6,
+    "low": 105.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 6,
+    "predicted": 4.4,
+    "low": 0.0,
+    "high": 7.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 90,
+    "predicted": 81.3,
+    "low": 61.6,
+    "high": 100.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 11,
+    "predicted": 13.1,
+    "low": 8.6,
+    "high": 16.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 79,
+    "predicted": 110.1,
+    "low": 87.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 6,
+    "predicted": 10.5,
+    "low": 5.9,
+    "high": 13.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 73,
+    "predicted": 110.7,
+    "low": 87.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 30,
+    "predicted": 27.5,
+    "low": 20.9,
+    "high": 33.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 11,
+    "predicted": 13.2,
+    "low": 8.7,
+    "high": 16.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 37,
+    "predicted": 37.2,
+    "low": 30.5,
+    "high": 43.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 67,
+    "predicted": 89.1,
+    "low": 69.3,
+    "high": 108.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 68,
+    "predicted": 79.0,
+    "low": 65.5,
+    "high": 89.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 99,
+    "predicted": 119.1,
+    "low": 102.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 22,
+    "predicted": 22.7,
+    "low": 16.0,
+    "high": 28.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 54,
+    "predicted": 55.5,
+    "low": 46.2,
+    "high": 64.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 97,
+    "predicted": 108.5,
+    "low": 85.7,
+    "high": 124.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 10,
+    "predicted": 9.5,
+    "low": 5.0,
+    "high": 12.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 123.3,
+    "low": 107.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 77,
+    "predicted": 96.1,
+    "low": 76.4,
+    "high": 115.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 88,
+    "predicted": 84.6,
+    "low": 64.9,
+    "high": 104.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 114.9,
+    "low": 92.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 120.5,
+    "low": 104.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 123.9,
+    "low": 107.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 83,
+    "predicted": 100.1,
+    "low": 77.3,
+    "high": 116.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 78,
+    "predicted": 82.2,
+    "low": 62.4,
+    "high": 101.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 75,
+    "predicted": 79.9,
+    "low": 66.4,
+    "high": 90.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 11,
+    "predicted": 12.3,
+    "low": 7.8,
+    "high": 15.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 53,
+    "predicted": 66.6,
+    "low": 53.0,
+    "high": 77.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 124.9,
+    "low": 108.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 63,
+    "predicted": 55.4,
+    "low": 46.0,
+    "high": 64.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 100,
+    "predicted": 90.4,
+    "low": 70.6,
+    "high": 109.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 124.6,
+    "low": 108.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 55,
+    "predicted": 62.2,
+    "low": 48.6,
+    "high": 72.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 48,
+    "predicted": 54.6,
+    "low": 45.3,
+    "high": 63.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 37,
+    "predicted": 33.7,
+    "low": 27.0,
+    "high": 39.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 44,
+    "predicted": 44.5,
+    "low": 35.2,
+    "high": 53.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 27,
+    "predicted": 30.5,
+    "low": 23.9,
+    "high": 36.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 18,
+    "predicted": 19.3,
+    "low": 14.7,
+    "high": 22.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 6,
+    "predicted": 7.7,
+    "low": 3.1,
+    "high": 11.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 15,
+    "predicted": 12.9,
+    "low": 8.4,
+    "high": 16.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 112,
+    "predicted": 102.6,
+    "low": 79.8,
+    "high": 118.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 108.1,
+    "low": 85.3,
+    "high": 124.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 13,
+    "predicted": 15.3,
+    "low": 10.8,
+    "high": 18.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 122,
+    "predicted": 120.1,
+    "low": 103.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 13,
+    "predicted": 8.1,
+    "low": 3.5,
+    "high": 11.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 98,
+    "predicted": 124.6,
+    "low": 108.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 53,
+    "predicted": 44.5,
+    "low": 35.1,
+    "high": 53.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 52,
+    "predicted": 52.7,
+    "low": 43.4,
+    "high": 61.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 106,
+    "predicted": 116.1,
+    "low": 99.9,
+    "high": 123.1
+   },
+   {
+    "dataset": "FD002",
+    "true": 103,
+    "predicted": 92.2,
+    "low": 72.4,
+    "high": 111.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 123.1,
+    "low": 106.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 123,
+    "predicted": 119.4,
+    "low": 103.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 26,
+    "predicted": 30.1,
+    "low": 23.5,
+    "high": 35.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 123.3,
+    "low": 107.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 73,
+    "predicted": 88.1,
+    "low": 68.4,
+    "high": 107.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 120.4,
+    "low": 104.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 39,
+    "predicted": 38.4,
+    "low": 31.7,
+    "high": 44.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 39,
+    "predicted": 36.6,
+    "low": 29.9,
+    "high": 42.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 14,
+    "predicted": 18.8,
+    "low": 14.2,
+    "high": 22.1
+   },
+   {
+    "dataset": "FD002",
+    "true": 11,
+    "predicted": 9.4,
+    "low": 4.9,
+    "high": 12.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 121,
+    "predicted": 119.4,
+    "low": 103.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 86,
+    "predicted": 72.9,
+    "low": 59.3,
+    "high": 83.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 56,
+    "predicted": 50.0,
+    "low": 40.6,
+    "high": 59.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 115,
+    "predicted": 109.5,
+    "low": 86.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 17,
+    "predicted": 19.4,
+    "low": 14.8,
+    "high": 22.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 119.2,
+    "low": 103.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 104,
+    "predicted": 107.0,
+    "low": 84.2,
+    "high": 123.1
+   },
+   {
+    "dataset": "FD002",
+    "true": 78,
+    "predicted": 58.7,
+    "low": 49.3,
+    "high": 67.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 86,
+    "predicted": 107.1,
+    "low": 84.3,
+    "high": 123.1
+   },
+   {
+    "dataset": "FD002",
+    "true": 98,
+    "predicted": 91.0,
+    "low": 71.3,
+    "high": 110.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 36,
+    "predicted": 39.9,
+    "low": 33.2,
+    "high": 45.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 94,
+    "predicted": 111.9,
+    "low": 89.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 52,
+    "predicted": 52.3,
+    "low": 43.0,
+    "high": 61.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 91,
+    "predicted": 100.8,
+    "low": 78.0,
+    "high": 116.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 15,
+    "predicted": 12.6,
+    "low": 8.0,
+    "high": 16.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 114.9,
+    "low": 92.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 74,
+    "predicted": 93.6,
+    "low": 73.9,
+    "high": 113.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 123.2,
+    "low": 106.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 17,
+    "predicted": 17.9,
+    "low": 13.3,
+    "high": 21.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 47,
+    "predicted": 54.9,
+    "low": 45.6,
+    "high": 64.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 114.9,
+    "low": 92.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 21,
+    "predicted": 25.8,
+    "low": 19.2,
+    "high": 31.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 79,
+    "predicted": 93.4,
+    "low": 73.6,
+    "high": 112.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 97,
+    "predicted": 112.2,
+    "low": 89.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 8,
+    "predicted": 7.0,
+    "low": 2.5,
+    "high": 10.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 9,
+    "predicted": 18.1,
+    "low": 13.6,
+    "high": 21.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 73,
+    "predicted": 93.0,
+    "low": 73.2,
+    "high": 112.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 118.0,
+    "low": 101.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 97,
+    "predicted": 87.7,
+    "low": 68.0,
+    "high": 107.1
+   },
+   {
+    "dataset": "FD002",
+    "true": 73,
+    "predicted": 103.5,
+    "low": 80.7,
+    "high": 119.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 49,
+    "predicted": 41.8,
+    "low": 32.5,
+    "high": 50.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 31,
+    "predicted": 30.9,
+    "low": 24.3,
+    "high": 36.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 97,
+    "predicted": 95.6,
+    "low": 75.9,
+    "high": 115.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 9,
+    "predicted": 10.6,
+    "low": 6.0,
+    "high": 13.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 14,
+    "predicted": 18.9,
+    "low": 14.3,
+    "high": 22.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 106,
+    "predicted": 120.9,
+    "low": 104.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 8,
+    "predicted": 7.6,
+    "low": 3.0,
+    "high": 10.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 8,
+    "predicted": 5.5,
+    "low": 0.9,
+    "high": 8.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 106,
+    "predicted": 85.0,
+    "low": 65.3,
+    "high": 104.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 116,
+    "predicted": 119.3,
+    "low": 103.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 120,
+    "predicted": 114.9,
+    "low": 92.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 61,
+    "predicted": 70.0,
+    "low": 56.4,
+    "high": 80.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 116.5,
+    "low": 100.3,
+    "high": 123.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 35,
+    "predicted": 35.5,
+    "low": 28.8,
+    "high": 41.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 80,
+    "predicted": 92.4,
+    "low": 72.7,
+    "high": 111.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 9,
+    "predicted": 15.2,
+    "low": 10.6,
+    "high": 18.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 50,
+    "predicted": 44.1,
+    "low": 34.7,
+    "high": 53.1
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 122.8,
+    "low": 106.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 78,
+    "predicted": 80.0,
+    "low": 60.3,
+    "high": 99.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 91,
+    "predicted": 89.3,
+    "low": 69.6,
+    "high": 108.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 7,
+    "predicted": 4.8,
+    "low": 0.3,
+    "high": 8.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 121.7,
+    "low": 105.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 119.7,
+    "low": 103.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 106,
+    "predicted": 103.5,
+    "low": 80.7,
+    "high": 119.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 15,
+    "predicted": 21.0,
+    "low": 14.4,
+    "high": 26.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 67,
+    "predicted": 99.8,
+    "low": 80.1,
+    "high": 119.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 116.3,
+    "low": 100.0,
+    "high": 123.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 7,
+    "predicted": 10.2,
+    "low": 5.6,
+    "high": 13.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 110.1,
+    "low": 87.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 124,
+    "predicted": 92.2,
+    "low": 72.5,
+    "high": 111.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 82,
+    "predicted": 68.8,
+    "low": 55.3,
+    "high": 79.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 108,
+    "predicted": 92.0,
+    "low": 72.3,
+    "high": 111.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 79,
+    "predicted": 79.8,
+    "low": 66.3,
+    "high": 90.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 121,
+    "predicted": 114.6,
+    "low": 91.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 120,
+    "predicted": 121.8,
+    "low": 105.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 39,
+    "predicted": 40.7,
+    "low": 31.4,
+    "high": 49.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 38,
+    "predicted": 48.3,
+    "low": 38.9,
+    "high": 57.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 9,
+    "predicted": 7.0,
+    "low": 2.4,
+    "high": 10.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 120.3,
+    "low": 104.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 87,
+    "predicted": 116.3,
+    "low": 100.0,
+    "high": 123.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 88,
+    "predicted": 96.1,
+    "low": 76.4,
+    "high": 115.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 7,
+    "predicted": 5.0,
+    "low": 0.4,
+    "high": 8.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 51,
+    "predicted": 56.6,
+    "low": 47.3,
+    "high": 65.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 55,
+    "predicted": 56.8,
+    "low": 47.5,
+    "high": 65.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 111.3,
+    "low": 88.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 47,
+    "predicted": 44.8,
+    "low": 35.4,
+    "high": 53.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 81,
+    "predicted": 84.0,
+    "low": 64.3,
+    "high": 103.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 43,
+    "predicted": 34.7,
+    "low": 28.1,
+    "high": 40.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 98,
+    "predicted": 110.1,
+    "low": 87.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 10,
+    "predicted": 11.0,
+    "low": 6.5,
+    "high": 14.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 92,
+    "predicted": 108.9,
+    "low": 86.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 11,
+    "predicted": 13.9,
+    "low": 9.4,
+    "high": 17.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 119.0,
+    "low": 102.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 34,
+    "predicted": 35.0,
+    "low": 28.4,
+    "high": 40.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 115,
+    "predicted": 92.0,
+    "low": 72.2,
+    "high": 111.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 59,
+    "predicted": 70.1,
+    "low": 56.5,
+    "high": 80.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 99,
+    "predicted": 81.6,
+    "low": 61.9,
+    "high": 101.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 103,
+    "predicted": 119.2,
+    "low": 103.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 108,
+    "predicted": 120.1,
+    "low": 103.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 83,
+    "predicted": 92.6,
+    "low": 72.9,
+    "high": 112.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 15,
+    "predicted": 18.4,
+    "low": 13.9,
+    "high": 21.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 9,
+    "predicted": 12.3,
+    "low": 7.8,
+    "high": 15.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 42,
+    "predicted": 48.3,
+    "low": 38.9,
+    "high": 57.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 13,
+    "predicted": 15.6,
+    "low": 11.1,
+    "high": 19.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 41,
+    "predicted": 48.0,
+    "low": 38.7,
+    "high": 57.1
+   },
+   {
+    "dataset": "FD002",
+    "true": 88,
+    "predicted": 92.3,
+    "low": 72.6,
+    "high": 111.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 14,
+    "predicted": 10.7,
+    "low": 6.1,
+    "high": 14.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 101.0,
+    "low": 78.2,
+    "high": 117.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 96,
+    "predicted": 96.2,
+    "low": 76.5,
+    "high": 115.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 82,
+    "predicted": 85.6,
+    "low": 65.9,
+    "high": 105.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 115.6,
+    "low": 99.4,
+    "high": 122.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 114.1,
+    "low": 91.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 36,
+    "predicted": 33.1,
+    "low": 26.5,
+    "high": 38.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 107,
+    "predicted": 102.3,
+    "low": 79.6,
+    "high": 118.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 14,
+    "predicted": 14.9,
+    "low": 10.3,
+    "high": 18.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 95,
+    "predicted": 110.7,
+    "low": 87.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 121.7,
+    "low": 105.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 23,
+    "predicted": 24.9,
+    "low": 18.3,
+    "high": 30.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 6,
+    "predicted": 5.1,
+    "low": 0.5,
+    "high": 8.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 121.3,
+    "low": 105.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 35,
+    "predicted": 35.3,
+    "low": 28.7,
+    "high": 41.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 97,
+    "predicted": 90.4,
+    "low": 70.6,
+    "high": 109.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 68,
+    "predicted": 65.9,
+    "low": 52.3,
+    "high": 76.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 14,
+    "predicted": 20.7,
+    "low": 14.1,
+    "high": 26.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 67,
+    "predicted": 70.2,
+    "low": 56.6,
+    "high": 80.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 124.1,
+    "low": 107.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 19,
+    "predicted": 12.5,
+    "low": 7.9,
+    "high": 15.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 10,
+    "predicted": 7.1,
+    "low": 2.5,
+    "high": 10.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 121.2,
+    "low": 105.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 111.8,
+    "low": 89.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 43,
+    "predicted": 43.3,
+    "low": 34.0,
+    "high": 52.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 12,
+    "predicted": 15.2,
+    "low": 10.6,
+    "high": 18.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 102.6,
+    "low": 79.8,
+    "high": 118.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 13,
+    "predicted": 11.6,
+    "low": 7.1,
+    "high": 15.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 37,
+    "predicted": 46.3,
+    "low": 37.0,
+    "high": 55.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 122,
+    "predicted": 122.8,
+    "low": 106.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 80,
+    "predicted": 71.8,
+    "low": 58.2,
+    "high": 82.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 93,
+    "predicted": 90.8,
+    "low": 71.1,
+    "high": 110.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 123.2,
+    "low": 107.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 32,
+    "predicted": 42.6,
+    "low": 33.2,
+    "high": 51.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 103,
+    "predicted": 115.5,
+    "low": 99.2,
+    "high": 122.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 121.2,
+    "low": 105.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 111,
+    "predicted": 124.2,
+    "low": 108.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 68,
+    "predicted": 85.4,
+    "low": 65.6,
+    "high": 104.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 122.6,
+    "low": 106.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 121,
+    "predicted": 124.3,
+    "low": 108.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 116.4,
+    "low": 100.2,
+    "high": 123.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 48,
+    "predicted": 52.8,
+    "low": 43.5,
+    "high": 61.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 85,
+    "predicted": 84.9,
+    "low": 65.1,
+    "high": 104.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 8,
+    "predicted": 9.8,
+    "low": 5.2,
+    "high": 13.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 23,
+    "predicted": 26.4,
+    "low": 19.7,
+    "high": 32.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 8,
+    "predicted": 5.3,
+    "low": 0.8,
+    "high": 8.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 6,
+    "predicted": 7.1,
+    "low": 2.6,
+    "high": 10.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 57,
+    "predicted": 57.9,
+    "low": 48.6,
+    "high": 66.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 83,
+    "predicted": 92.1,
+    "low": 72.3,
+    "high": 111.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 116.9,
+    "low": 100.7,
+    "high": 123.9
+   },
+   {
+    "dataset": "FD002",
+    "true": 101,
+    "predicted": 106.7,
+    "low": 83.9,
+    "high": 122.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 81,
+    "predicted": 62.8,
+    "low": 49.2,
+    "high": 73.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 86,
+    "predicted": 124.1,
+    "low": 107.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 123.9,
+    "low": 107.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 73,
+    "predicted": 81.6,
+    "low": 61.9,
+    "high": 101.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 121,
+    "predicted": 124.4,
+    "low": 108.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 99.0,
+    "low": 79.3,
+    "high": 118.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 75,
+    "predicted": 56.7,
+    "low": 47.3,
+    "high": 65.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 121.4,
+    "low": 105.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 11,
+    "predicted": 8.8,
+    "low": 4.3,
+    "high": 12.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 108,
+    "predicted": 98.3,
+    "low": 78.5,
+    "high": 117.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 14,
+    "predicted": 10.6,
+    "low": 6.1,
+    "high": 14.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 123.7,
+    "low": 107.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 61,
+    "predicted": 87.9,
+    "low": 68.2,
+    "high": 107.3
+   },
+   {
+    "dataset": "FD002",
+    "true": 85,
+    "predicted": 93.2,
+    "low": 73.5,
+    "high": 112.6
+   },
+   {
+    "dataset": "FD002",
+    "true": 8,
+    "predicted": 4.8,
+    "low": 0.3,
+    "high": 8.2
+   },
+   {
+    "dataset": "FD002",
+    "true": 101,
+    "predicted": 91.3,
+    "low": 71.6,
+    "high": 110.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 122.6,
+    "low": 106.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 89,
+    "predicted": 109.0,
+    "low": 86.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 121.2,
+    "low": 105.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 12,
+    "predicted": 12.0,
+    "low": 7.4,
+    "high": 15.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 62,
+    "predicted": 53.4,
+    "low": 44.1,
+    "high": 62.4
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 122.9,
+    "low": 106.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 101,
+    "predicted": 106.6,
+    "low": 83.8,
+    "high": 122.7
+   },
+   {
+    "dataset": "FD002",
+    "true": 121,
+    "predicted": 113.6,
+    "low": 90.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 123.5,
+    "low": 107.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 17,
+    "predicted": 21.2,
+    "low": 14.5,
+    "high": 27.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 124.1,
+    "low": 107.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 122.6,
+    "low": 106.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 16,
+    "predicted": 10.7,
+    "low": 6.1,
+    "high": 14.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 120.6,
+    "low": 104.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 122.4,
+    "low": 106.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 56,
+    "predicted": 62.1,
+    "low": 48.5,
+    "high": 72.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 111,
+    "predicted": 123.6,
+    "low": 107.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 23,
+    "predicted": 20.9,
+    "low": 14.3,
+    "high": 26.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 84,
+    "predicted": 114.6,
+    "low": 91.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 12,
+    "predicted": 8.2,
+    "low": 3.6,
+    "high": 11.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 43,
+    "predicted": 32.7,
+    "low": 26.1,
+    "high": 38.5
+   },
+   {
+    "dataset": "FD002",
+    "true": 48,
+    "predicted": 39.9,
+    "low": 33.3,
+    "high": 45.8
+   },
+   {
+    "dataset": "FD002",
+    "true": 122,
+    "predicted": 124.6,
+    "low": 108.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 120.7,
+    "low": 104.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 56,
+    "predicted": 59.9,
+    "low": 50.6,
+    "high": 69.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 125,
+    "predicted": 116.0,
+    "low": 99.7,
+    "high": 123.0
+   },
+   {
+    "dataset": "FD002",
+    "true": 51,
+    "predicted": 64.7,
+    "low": 51.1,
+    "high": 75.3
+   },
+   {
+    "dataset": "FD003",
+    "true": 44,
+    "predicted": 46.3,
+    "low": 36.9,
+    "high": 55.3
+   },
+   {
+    "dataset": "FD003",
+    "true": 51,
+    "predicted": 47.9,
+    "low": 38.5,
+    "high": 56.9
+   },
+   {
+    "dataset": "FD003",
+    "true": 27,
+    "predicted": 33.3,
+    "low": 26.7,
+    "high": 39.1
+   },
+   {
+    "dataset": "FD003",
+    "true": 120,
+    "predicted": 117.5,
+    "low": 101.3,
+    "high": 124.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 101,
+    "predicted": 93.5,
+    "low": 73.8,
+    "high": 112.9
+   },
+   {
+    "dataset": "FD003",
+    "true": 99,
+    "predicted": 116.1,
+    "low": 99.8,
+    "high": 123.1
+   },
+   {
+    "dataset": "FD003",
+    "true": 71,
+    "predicted": 59.8,
+    "low": 50.5,
+    "high": 68.9
+   },
+   {
+    "dataset": "FD003",
+    "true": 55,
+    "predicted": 46.1,
+    "low": 36.8,
+    "high": 55.1
+   },
+   {
+    "dataset": "FD003",
+    "true": 55,
+    "predicted": 59.3,
+    "low": 50.0,
+    "high": 68.3
+   },
+   {
+    "dataset": "FD003",
+    "true": 66,
+    "predicted": 74.4,
+    "low": 60.8,
+    "high": 85.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 77,
+    "predicted": 91.2,
+    "low": 71.5,
+    "high": 110.6
+   },
+   {
+    "dataset": "FD003",
+    "true": 115,
+    "predicted": 124.1,
+    "low": 107.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 115,
+    "predicted": 116.1,
+    "low": 99.9,
+    "high": 123.1
+   },
+   {
+    "dataset": "FD003",
+    "true": 31,
+    "predicted": 27.5,
+    "low": 20.9,
+    "high": 33.3
+   },
+   {
+    "dataset": "FD003",
+    "true": 108,
+    "predicted": 106.6,
+    "low": 83.8,
+    "high": 122.6
+   },
+   {
+    "dataset": "FD003",
+    "true": 56,
+    "predicted": 66.9,
+    "low": 53.3,
+    "high": 77.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 121.7,
+    "low": 105.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 118.2,
+    "low": 102.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 85,
+    "predicted": 112.0,
+    "low": 89.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 56,
+    "predicted": 61.1,
+    "low": 47.5,
+    "high": 71.8
+   },
+   {
+    "dataset": "FD003",
+    "true": 18,
+    "predicted": 17.5,
+    "low": 13.0,
+    "high": 20.9
+   },
+   {
+    "dataset": "FD003",
+    "true": 119,
+    "predicted": 114.4,
+    "low": 91.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 78,
+    "predicted": 88.4,
+    "low": 68.7,
+    "high": 107.8
+   },
+   {
+    "dataset": "FD003",
+    "true": 9,
+    "predicted": 6.4,
+    "low": 1.8,
+    "high": 9.7
+   },
+   {
+    "dataset": "FD003",
+    "true": 58,
+    "predicted": 54.5,
+    "low": 45.2,
+    "high": 63.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 11,
+    "predicted": 12.1,
+    "low": 7.6,
+    "high": 15.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 88,
+    "predicted": 111.4,
+    "low": 88.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 122.2,
+    "low": 106.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 124,
+    "predicted": 108.2,
+    "low": 85.4,
+    "high": 124.2
+   },
+   {
+    "dataset": "FD003",
+    "true": 89,
+    "predicted": 84.8,
+    "low": 65.0,
+    "high": 104.2
+   },
+   {
+    "dataset": "FD003",
+    "true": 79,
+    "predicted": 84.3,
+    "low": 64.5,
+    "high": 103.7
+   },
+   {
+    "dataset": "FD003",
+    "true": 55,
+    "predicted": 70.4,
+    "low": 56.8,
+    "high": 81.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 71,
+    "predicted": 84.0,
+    "low": 64.3,
+    "high": 103.4
+   },
+   {
+    "dataset": "FD003",
+    "true": 65,
+    "predicted": 77.2,
+    "low": 63.6,
+    "high": 87.8
+   },
+   {
+    "dataset": "FD003",
+    "true": 87,
+    "predicted": 98.7,
+    "low": 79.0,
+    "high": 118.1
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 123.9,
+    "low": 107.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 124.9,
+    "low": 108.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 22,
+    "predicted": 23.1,
+    "low": 16.5,
+    "high": 29.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 8,
+    "predicted": 9.8,
+    "low": 5.2,
+    "high": 13.1
+   },
+   {
+    "dataset": "FD003",
+    "true": 41,
+    "predicted": 45.4,
+    "low": 36.1,
+    "high": 54.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 116.6,
+    "low": 100.4,
+    "high": 123.6
+   },
+   {
+    "dataset": "FD003",
+    "true": 115,
+    "predicted": 110.1,
+    "low": 87.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 106.9,
+    "low": 84.1,
+    "high": 122.9
+   },
+   {
+    "dataset": "FD003",
+    "true": 69,
+    "predicted": 63.4,
+    "low": 49.9,
+    "high": 74.1
+   },
+   {
+    "dataset": "FD003",
+    "true": 111,
+    "predicted": 123.9,
+    "low": 107.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 7,
+    "predicted": 8.2,
+    "low": 3.6,
+    "high": 11.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 118.0,
+    "low": 101.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 55,
+    "predicted": 45.6,
+    "low": 36.2,
+    "high": 54.6
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 117.5,
+    "low": 101.3,
+    "high": 124.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 11,
+    "predicted": 7.8,
+    "low": 3.3,
+    "high": 11.2
+   },
+   {
+    "dataset": "FD003",
+    "true": 78,
+    "predicted": 82.1,
+    "low": 62.4,
+    "high": 101.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 120,
+    "predicted": 123.6,
+    "low": 107.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 87,
+    "predicted": 94.5,
+    "low": 74.7,
+    "high": 113.9
+   },
+   {
+    "dataset": "FD003",
+    "true": 87,
+    "predicted": 121.1,
+    "low": 104.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 55,
+    "predicted": 53.2,
+    "low": 43.9,
+    "high": 62.3
+   },
+   {
+    "dataset": "FD003",
+    "true": 93,
+    "predicted": 89.4,
+    "low": 69.7,
+    "high": 108.8
+   },
+   {
+    "dataset": "FD003",
+    "true": 88,
+    "predicted": 82.7,
+    "low": 63.0,
+    "high": 102.1
+   },
+   {
+    "dataset": "FD003",
+    "true": 40,
+    "predicted": 42.5,
+    "low": 33.2,
+    "high": 51.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 49,
+    "predicted": 46.4,
+    "low": 37.0,
+    "high": 55.4
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 117.3,
+    "low": 101.1,
+    "high": 124.3
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 123.6,
+    "low": 107.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 58,
+    "predicted": 61.8,
+    "low": 48.2,
+    "high": 72.4
+   },
+   {
+    "dataset": "FD003",
+    "true": 117,
+    "predicted": 117.1,
+    "low": 100.9,
+    "high": 124.1
+   },
+   {
+    "dataset": "FD003",
+    "true": 28,
+    "predicted": 28.2,
+    "low": 21.6,
+    "high": 34.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 115,
+    "predicted": 122.7,
+    "low": 106.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 87,
+    "predicted": 99.5,
+    "low": 79.8,
+    "high": 118.9
+   },
+   {
+    "dataset": "FD003",
+    "true": 92,
+    "predicted": 111.5,
+    "low": 88.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 103,
+    "predicted": 107.7,
+    "low": 84.9,
+    "high": 123.7
+   },
+   {
+    "dataset": "FD003",
+    "true": 100,
+    "predicted": 102.8,
+    "low": 80.0,
+    "high": 118.8
+   },
+   {
+    "dataset": "FD003",
+    "true": 63,
+    "predicted": 85.8,
+    "low": 66.1,
+    "high": 105.2
+   },
+   {
+    "dataset": "FD003",
+    "true": 35,
+    "predicted": 34.5,
+    "low": 27.9,
+    "high": 40.3
+   },
+   {
+    "dataset": "FD003",
+    "true": 45,
+    "predicted": 48.6,
+    "low": 39.3,
+    "high": 57.7
+   },
+   {
+    "dataset": "FD003",
+    "true": 99,
+    "predicted": 121.3,
+    "low": 105.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 117,
+    "predicted": 124.2,
+    "low": 107.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 45,
+    "predicted": 39.7,
+    "low": 33.1,
+    "high": 45.6
+   },
+   {
+    "dataset": "FD003",
+    "true": 27,
+    "predicted": 27.5,
+    "low": 20.8,
+    "high": 33.3
+   },
+   {
+    "dataset": "FD003",
+    "true": 86,
+    "predicted": 77.1,
+    "low": 63.6,
+    "high": 87.8
+   },
+   {
+    "dataset": "FD003",
+    "true": 20,
+    "predicted": 22.8,
+    "low": 16.1,
+    "high": 28.6
+   },
+   {
+    "dataset": "FD003",
+    "true": 18,
+    "predicted": 15.1,
+    "low": 10.5,
+    "high": 18.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 112.6,
+    "low": 89.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 15,
+    "predicted": 30.4,
+    "low": 23.8,
+    "high": 36.2
+   },
+   {
+    "dataset": "FD003",
+    "true": 6,
+    "predicted": 4.9,
+    "low": 0.4,
+    "high": 8.3
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 113.7,
+    "low": 90.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 104,
+    "predicted": 71.7,
+    "low": 58.1,
+    "high": 82.4
+   },
+   {
+    "dataset": "FD003",
+    "true": 56,
+    "predicted": 61.7,
+    "low": 48.1,
+    "high": 72.4
+   },
+   {
+    "dataset": "FD003",
+    "true": 25,
+    "predicted": 23.9,
+    "low": 17.3,
+    "high": 29.7
+   },
+   {
+    "dataset": "FD003",
+    "true": 68,
+    "predicted": 72.1,
+    "low": 58.5,
+    "high": 82.8
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 122.3,
+    "low": 106.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 41,
+    "predicted": 43.9,
+    "low": 34.5,
+    "high": 52.9
+   },
+   {
+    "dataset": "FD003",
+    "true": 51,
+    "predicted": 51.5,
+    "low": 42.2,
+    "high": 60.6
+   },
+   {
+    "dataset": "FD003",
+    "true": 81,
+    "predicted": 121.7,
+    "low": 105.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 14,
+    "predicted": 15.4,
+    "low": 10.9,
+    "high": 18.8
+   },
+   {
+    "dataset": "FD003",
+    "true": 67,
+    "predicted": 82.7,
+    "low": 62.9,
+    "high": 102.1
+   },
+   {
+    "dataset": "FD003",
+    "true": 10,
+    "predicted": 6.2,
+    "low": 1.6,
+    "high": 9.5
+   },
+   {
+    "dataset": "FD003",
+    "true": 125,
+    "predicted": 109.3,
+    "low": 86.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 113,
+    "predicted": 113.0,
+    "low": 90.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 123,
+    "predicted": 113.5,
+    "low": 90.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD003",
+    "true": 17,
+    "predicted": 18.0,
+    "low": 13.4,
+    "high": 21.3
+   },
+   {
+    "dataset": "FD003",
+    "true": 8,
+    "predicted": 8.5,
+    "low": 3.9,
+    "high": 11.9
+   },
+   {
+    "dataset": "FD003",
+    "true": 28,
+    "predicted": 30.3,
+    "low": 23.6,
+    "high": 36.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 22,
+    "predicted": 30.0,
+    "low": 23.4,
+    "high": 35.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 39,
+    "predicted": 34.8,
+    "low": 28.2,
+    "high": 40.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 107,
+    "predicted": 119.9,
+    "low": 103.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 75,
+    "predicted": 81.5,
+    "low": 61.8,
+    "high": 100.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 123.0,
+    "low": 106.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 78,
+    "predicted": 68.5,
+    "low": 54.9,
+    "high": 79.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 94,
+    "predicted": 115.2,
+    "low": 99.0,
+    "high": 122.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 14,
+    "predicted": 16.6,
+    "low": 12.0,
+    "high": 19.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 99,
+    "predicted": 95.8,
+    "low": 76.1,
+    "high": 115.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.1,
+    "low": 105.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 7,
+    "predicted": 8.1,
+    "low": 3.5,
+    "high": 11.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 71,
+    "predicted": 79.4,
+    "low": 65.8,
+    "high": 90.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 105,
+    "predicted": 122.6,
+    "low": 106.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 12,
+    "predicted": 27.9,
+    "low": 21.3,
+    "high": 33.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 123.2,
+    "low": 107.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 104,
+    "predicted": 116.7,
+    "low": 100.4,
+    "high": 123.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 124.5,
+    "low": 108.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 82,
+    "predicted": 91.6,
+    "low": 71.8,
+    "high": 111.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 91,
+    "predicted": 97.2,
+    "low": 77.5,
+    "high": 116.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 11,
+    "predicted": 9.2,
+    "low": 4.7,
+    "high": 12.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 26,
+    "predicted": 23.7,
+    "low": 17.1,
+    "high": 29.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 109.3,
+    "low": 86.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 39,
+    "predicted": 43.4,
+    "low": 34.1,
+    "high": 52.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 92,
+    "predicted": 92.4,
+    "low": 72.6,
+    "high": 111.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 76,
+    "predicted": 63.6,
+    "low": 50.0,
+    "high": 74.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 124,
+    "predicted": 124.2,
+    "low": 107.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 64,
+    "predicted": 73.7,
+    "low": 60.1,
+    "high": 84.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 118,
+    "predicted": 110.7,
+    "low": 87.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 6,
+    "predicted": 6.4,
+    "low": 1.9,
+    "high": 9.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 22,
+    "predicted": 28.3,
+    "low": 21.6,
+    "high": 34.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 120.0,
+    "low": 103.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 91.3,
+    "low": 71.5,
+    "high": 110.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 36,
+    "predicted": 33.0,
+    "low": 26.4,
+    "high": 38.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 73,
+    "predicted": 68.6,
+    "low": 55.0,
+    "high": 79.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 89,
+    "predicted": 73.8,
+    "low": 60.2,
+    "high": 84.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 11,
+    "predicted": 12.2,
+    "low": 7.7,
+    "high": 15.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 81.7,
+    "low": 61.9,
+    "high": 101.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 10,
+    "predicted": 17.4,
+    "low": 12.9,
+    "high": 20.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 97,
+    "predicted": 83.8,
+    "low": 64.0,
+    "high": 103.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 30,
+    "predicted": 27.0,
+    "low": 20.4,
+    "high": 32.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 42,
+    "predicted": 41.8,
+    "low": 32.5,
+    "high": 50.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 60,
+    "predicted": 61.6,
+    "low": 48.0,
+    "high": 72.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 85,
+    "predicted": 98.8,
+    "low": 79.0,
+    "high": 118.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 121.8,
+    "low": 105.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 34,
+    "predicted": 33.4,
+    "low": 26.8,
+    "high": 39.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 45,
+    "predicted": 40.9,
+    "low": 31.6,
+    "high": 50.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 24,
+    "predicted": 26.7,
+    "low": 20.1,
+    "high": 32.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 86,
+    "predicted": 88.2,
+    "low": 68.5,
+    "high": 107.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 119,
+    "predicted": 103.6,
+    "low": 80.8,
+    "high": 119.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 123.6,
+    "low": 107.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 120.1,
+    "low": 103.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 118.8,
+    "low": 102.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 67,
+    "predicted": 68.4,
+    "low": 54.9,
+    "high": 79.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 97,
+    "predicted": 102.3,
+    "low": 79.5,
+    "high": 118.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 8,
+    "predicted": 4.3,
+    "low": 0.0,
+    "high": 7.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.0,
+    "low": 105.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 51,
+    "predicted": 43.8,
+    "low": 34.5,
+    "high": 52.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 33,
+    "predicted": 33.1,
+    "low": 26.4,
+    "high": 38.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 46,
+    "predicted": 60.7,
+    "low": 47.1,
+    "high": 71.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 12,
+    "predicted": 18.7,
+    "low": 14.2,
+    "high": 22.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 113.1,
+    "low": 90.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 46,
+    "predicted": 44.6,
+    "low": 35.3,
+    "high": 53.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 46,
+    "predicted": 46.6,
+    "low": 37.2,
+    "high": 55.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 12,
+    "predicted": 11.7,
+    "low": 7.1,
+    "high": 15.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 33,
+    "predicted": 37.7,
+    "low": 31.1,
+    "high": 43.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 15,
+    "predicted": 19.8,
+    "low": 15.3,
+    "high": 23.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 119.6,
+    "low": 103.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 23,
+    "predicted": 32.7,
+    "low": 26.1,
+    "high": 38.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 89,
+    "predicted": 100.5,
+    "low": 77.7,
+    "high": 116.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 124,
+    "predicted": 118.7,
+    "low": 102.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.1,
+    "low": 105.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 25,
+    "predicted": 31.7,
+    "low": 25.1,
+    "high": 37.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 74,
+    "predicted": 73.3,
+    "low": 59.7,
+    "high": 84.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 78,
+    "predicted": 81.7,
+    "low": 61.9,
+    "high": 101.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 114,
+    "predicted": 107.1,
+    "low": 84.3,
+    "high": 123.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 96,
+    "predicted": 118.3,
+    "low": 102.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 10,
+    "predicted": 13.3,
+    "low": 8.8,
+    "high": 16.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 120.3,
+    "low": 104.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.8,
+    "low": 106.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 115,
+    "predicted": 120.7,
+    "low": 104.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 70,
+    "predicted": 75.6,
+    "low": 62.1,
+    "high": 86.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 94,
+    "predicted": 121.7,
+    "low": 105.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 56,
+    "predicted": 64.5,
+    "low": 51.0,
+    "high": 75.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 86,
+    "predicted": 86.8,
+    "low": 67.1,
+    "high": 106.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 96,
+    "predicted": 73.2,
+    "low": 59.6,
+    "high": 83.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 50,
+    "predicted": 42.9,
+    "low": 33.5,
+    "high": 51.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 73,
+    "predicted": 62.9,
+    "low": 49.3,
+    "high": 73.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.3,
+    "low": 106.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 113.5,
+    "low": 90.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 123.8,
+    "low": 107.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 71,
+    "predicted": 87.6,
+    "low": 67.9,
+    "high": 107.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 105,
+    "predicted": 124.4,
+    "low": 108.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 113,
+    "predicted": 111.1,
+    "low": 88.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 37,
+    "predicted": 45.5,
+    "low": 36.1,
+    "high": 54.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 7,
+    "predicted": 11.9,
+    "low": 7.3,
+    "high": 15.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 13,
+    "predicted": 13.4,
+    "low": 8.9,
+    "high": 16.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 22,
+    "predicted": 20.5,
+    "low": 13.9,
+    "high": 26.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 9,
+    "predicted": 12.1,
+    "low": 7.5,
+    "high": 15.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 120,
+    "predicted": 124.7,
+    "low": 108.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 100,
+    "predicted": 106.5,
+    "low": 83.7,
+    "high": 122.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 107,
+    "predicted": 83.1,
+    "low": 63.4,
+    "high": 102.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 41,
+    "predicted": 44.1,
+    "low": 34.7,
+    "high": 53.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.7,
+    "low": 106.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 124.6,
+    "low": 108.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 59,
+    "predicted": 74.0,
+    "low": 60.4,
+    "high": 84.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 18,
+    "predicted": 20.4,
+    "low": 13.8,
+    "high": 26.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 66,
+    "predicted": 87.7,
+    "low": 68.0,
+    "high": 107.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 13,
+    "predicted": 12.8,
+    "low": 8.2,
+    "high": 16.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 14,
+    "predicted": 25.0,
+    "low": 18.4,
+    "high": 30.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 120.2,
+    "low": 104.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 13,
+    "predicted": 11.0,
+    "low": 6.4,
+    "high": 14.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 75,
+    "predicted": 115.2,
+    "low": 98.9,
+    "high": 122.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 8,
+    "predicted": 17.4,
+    "low": 12.8,
+    "high": 20.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 109,
+    "predicted": 100.0,
+    "low": 80.2,
+    "high": 119.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 41,
+    "predicted": 39.9,
+    "low": 33.3,
+    "high": 45.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 23,
+    "predicted": 31.5,
+    "low": 24.9,
+    "high": 37.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 86,
+    "predicted": 64.8,
+    "low": 51.2,
+    "high": 75.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 124.9,
+    "low": 108.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 15,
+    "predicted": 18.6,
+    "low": 14.1,
+    "high": 22.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 124.7,
+    "low": 108.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 119.1,
+    "low": 102.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 120,
+    "predicted": 107.4,
+    "low": 84.6,
+    "high": 123.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 107.1,
+    "low": 84.3,
+    "high": 123.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 101,
+    "predicted": 105.7,
+    "low": 82.9,
+    "high": 121.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 116,
+    "predicted": 115.2,
+    "low": 99.0,
+    "high": 122.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.2,
+    "low": 106.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 36,
+    "predicted": 38.5,
+    "low": 31.9,
+    "high": 44.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 7,
+    "predicted": 8.9,
+    "low": 4.3,
+    "high": 12.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 122,
+    "predicted": 118.8,
+    "low": 102.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.5,
+    "low": 106.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 88,
+    "predicted": 98.5,
+    "low": 78.8,
+    "high": 117.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.7,
+    "low": 106.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.3,
+    "low": 106.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 108,
+    "predicted": 121.7,
+    "low": 105.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 53,
+    "predicted": 62.3,
+    "low": 48.7,
+    "high": 72.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 120.1,
+    "low": 103.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 59,
+    "predicted": 56.4,
+    "low": 47.1,
+    "high": 65.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 100,
+    "predicted": 119.9,
+    "low": 103.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 56,
+    "predicted": 71.2,
+    "low": 57.7,
+    "high": 81.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 113.4,
+    "low": 90.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 76,
+    "predicted": 72.3,
+    "low": 58.7,
+    "high": 83.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 57,
+    "predicted": 53.8,
+    "low": 44.4,
+    "high": 62.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 31,
+    "predicted": 21.6,
+    "low": 15.0,
+    "high": 27.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 88,
+    "predicted": 92.4,
+    "low": 72.6,
+    "high": 111.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 119.1,
+    "low": 102.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 34,
+    "predicted": 44.4,
+    "low": 35.1,
+    "high": 53.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 7,
+    "predicted": 9.0,
+    "low": 4.4,
+    "high": 12.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.9,
+    "low": 106.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 6,
+    "predicted": 10.8,
+    "low": 6.2,
+    "high": 14.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 22,
+    "predicted": 30.6,
+    "low": 24.0,
+    "high": 36.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 83,
+    "predicted": 99.0,
+    "low": 79.3,
+    "high": 118.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 82,
+    "predicted": 99.3,
+    "low": 79.6,
+    "high": 118.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 84,
+    "predicted": 95.5,
+    "low": 75.8,
+    "high": 114.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 95,
+    "predicted": 97.4,
+    "low": 77.7,
+    "high": 116.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 111,
+    "predicted": 118.9,
+    "low": 102.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 72,
+    "predicted": 111.7,
+    "low": 88.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 109,
+    "predicted": 111.1,
+    "low": 88.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 87,
+    "predicted": 108.2,
+    "low": 85.4,
+    "high": 124.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 123.9,
+    "low": 107.6,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 114.8,
+    "low": 92.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 12,
+    "predicted": 18.7,
+    "low": 14.2,
+    "high": 22.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 8,
+    "predicted": 6.3,
+    "low": 1.7,
+    "high": 9.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 10,
+    "predicted": 12.7,
+    "low": 8.1,
+    "high": 16.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 123,
+    "predicted": 118.5,
+    "low": 102.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 103,
+    "predicted": 102.8,
+    "low": 80.0,
+    "high": 118.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 12,
+    "predicted": 15.7,
+    "low": 11.1,
+    "high": 19.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 106,
+    "predicted": 103.8,
+    "low": 81.0,
+    "high": 119.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 12,
+    "predicted": 16.5,
+    "low": 11.9,
+    "high": 19.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 32,
+    "predicted": 22.3,
+    "low": 15.7,
+    "high": 28.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 37,
+    "predicted": 25.4,
+    "low": 18.8,
+    "high": 31.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 116,
+    "predicted": 102.9,
+    "low": 80.1,
+    "high": 119.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 15,
+    "predicted": 15.3,
+    "low": 10.8,
+    "high": 18.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 10,
+    "predicted": 7.7,
+    "low": 3.1,
+    "high": 11.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 46,
+    "predicted": 46.7,
+    "low": 37.3,
+    "high": 55.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 123.1,
+    "low": 106.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 24,
+    "predicted": 23.9,
+    "low": 17.3,
+    "high": 29.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 121.2,
+    "low": 105.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 56,
+    "predicted": 86.7,
+    "low": 67.0,
+    "high": 106.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 43,
+    "predicted": 46.4,
+    "low": 37.1,
+    "high": 55.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 122.4,
+    "low": 106.1,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 71,
+    "predicted": 80.5,
+    "low": 60.8,
+    "high": 99.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 104,
+    "predicted": 107.1,
+    "low": 84.3,
+    "high": 123.1
+   },
+   {
+    "dataset": "FD004",
+    "true": 15,
+    "predicted": 21.4,
+    "low": 14.8,
+    "high": 27.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 89,
+    "predicted": 108.7,
+    "low": 86.0,
+    "high": 124.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 36,
+    "predicted": 31.2,
+    "low": 24.6,
+    "high": 37.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 11,
+    "predicted": 8.5,
+    "low": 4.0,
+    "high": 11.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 92,
+    "predicted": 92.4,
+    "low": 72.6,
+    "high": 111.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 96,
+    "predicted": 90.9,
+    "low": 71.2,
+    "high": 110.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 59,
+    "predicted": 88.2,
+    "low": 68.4,
+    "high": 107.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 13,
+    "predicted": 8.2,
+    "low": 3.6,
+    "high": 11.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 123.6,
+    "low": 107.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 106.2,
+    "low": 83.4,
+    "high": 122.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 109,
+    "predicted": 123.0,
+    "low": 106.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 116,
+    "predicted": 123.9,
+    "low": 107.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 91,
+    "predicted": 102.2,
+    "low": 79.4,
+    "high": 118.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 11,
+    "predicted": 14.3,
+    "low": 9.8,
+    "high": 17.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 88,
+    "predicted": 93.2,
+    "low": 73.4,
+    "high": 112.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 108,
+    "predicted": 121.4,
+    "low": 105.2,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 76,
+    "predicted": 68.7,
+    "low": 55.2,
+    "high": 79.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 14,
+    "predicted": 18.9,
+    "low": 14.3,
+    "high": 22.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 89,
+    "predicted": 92.9,
+    "low": 73.1,
+    "high": 112.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 117.4,
+    "low": 101.2,
+    "high": 124.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 17,
+    "predicted": 17.9,
+    "low": 13.3,
+    "high": 21.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 66,
+    "predicted": 62.8,
+    "low": 49.2,
+    "high": 73.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 113.5,
+    "low": 90.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 41,
+    "predicted": 43.2,
+    "low": 33.8,
+    "high": 52.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 117.5,
+    "low": 101.3,
+    "high": 124.5
+   },
+   {
+    "dataset": "FD004",
+    "true": 73,
+    "predicted": 73.4,
+    "low": 59.8,
+    "high": 84.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 39,
+    "predicted": 48.6,
+    "low": 39.2,
+    "high": 57.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 58,
+    "predicted": 47.2,
+    "low": 37.9,
+    "high": 56.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 14,
+    "predicted": 11.5,
+    "low": 7.0,
+    "high": 14.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 124.0,
+    "low": 107.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 88,
+    "predicted": 112.3,
+    "low": 89.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 124.1,
+    "low": 107.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 124.9,
+    "low": 108.7,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 120,
+    "predicted": 123.1,
+    "low": 106.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 98,
+    "predicted": 109.1,
+    "low": 86.3,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 33,
+    "predicted": 35.4,
+    "low": 28.8,
+    "high": 41.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 121.7,
+    "low": 105.4,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 110,
+    "predicted": 104.8,
+    "low": 82.0,
+    "high": 120.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 68,
+    "predicted": 53.5,
+    "low": 44.2,
+    "high": 62.6
+   },
+   {
+    "dataset": "FD004",
+    "true": 24,
+    "predicted": 25.4,
+    "low": 18.8,
+    "high": 31.3
+   },
+   {
+    "dataset": "FD004",
+    "true": 75,
+    "predicted": 82.3,
+    "low": 62.6,
+    "high": 101.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 18,
+    "predicted": 13.8,
+    "low": 9.2,
+    "high": 17.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 16,
+    "predicted": 11.8,
+    "low": 7.3,
+    "high": 15.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 118.7,
+    "low": 102.5,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 98,
+    "predicted": 36.1,
+    "low": 29.5,
+    "high": 41.9
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 123.3,
+    "low": 107.0,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 81,
+    "predicted": 91.0,
+    "low": 71.3,
+    "high": 110.4
+   },
+   {
+    "dataset": "FD004",
+    "true": 118,
+    "predicted": 92.8,
+    "low": 73.0,
+    "high": 112.2
+   },
+   {
+    "dataset": "FD004",
+    "true": 35,
+    "predicted": 32.8,
+    "low": 26.2,
+    "high": 38.7
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 124.1,
+    "low": 107.9,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 125,
+    "predicted": 125.0,
+    "low": 108.8,
+    "high": 125.0
+   },
+   {
+    "dataset": "FD004",
+    "true": 112,
+    "predicted": 91.4,
+    "low": 71.6,
+    "high": 110.8
+   },
+   {
+    "dataset": "FD004",
+    "true": 26,
+    "predicted": 28.0,
+    "low": 21.4,
+    "high": 33.9
+   }
+  ],
+  "validation": {
+   "alert_threshold_recall_target": 0.95
+  },
+  "previous_release": {
+   "name": "v2.0.0 LSTM (FD001 only)",
+   "fd001_rmse_as_served": 27.81,
+   "fd001_rmse_with_history": 13.04,
+   "note": "The v2 API repeated one reading 30 times instead of using the engine's history."
+  },
+  "global_importance": [
+   {
+    "feature": "sensor_11",
+    "mean_abs_cycles": 15.57
+   },
+   {
+    "feature": "sensor_4",
+    "mean_abs_cycles": 7.22
+   },
+   {
+    "feature": "cycle",
+    "mean_abs_cycles": 5.48
+   },
+   {
+    "feature": "sensor_17",
+    "mean_abs_cycles": 3.99
+   },
+   {
+    "feature": "sensor_15",
+    "mean_abs_cycles": 3.19
+   },
+   {
+    "feature": "sensor_2",
+    "mean_abs_cycles": 2.7
+   },
+   {
+    "feature": "sensor_9",
+    "mean_abs_cycles": 2.54
+   },
+   {
+    "feature": "sensor_3",
+    "mean_abs_cycles": 2.22
+   },
+   {
+    "feature": "sensor_14",
+    "mean_abs_cycles": 2.17
+   },
+   {
+    "feature": "sensor_12",
+    "mean_abs_cycles": 1.15
+   },
+   {
+    "feature": "sensor_7",
+    "mean_abs_cycles": 0.84
+   },
+   {
+    "feature": "sensor_21",
+    "mean_abs_cycles": 0.78
+   },
+   {
+    "feature": "sensor_8",
+    "mean_abs_cycles": 0.69
+   },
+   {
+    "feature": "sensor_20",
+    "mean_abs_cycles": 0.54
+   },
+   {
+    "feature": "sensor_13",
+    "mean_abs_cycles": 0.52
+   }
+  ]
+ },
+ "limitations": [
+  "Trained on simulated data (C-MAPSS). Real engines need retraining on their own run-to-failure records.",
+  "The RUL target is capped at 125 cycles, so early-life engines all read as '125+'.",
+  "Drift is measured from the first recorded cycles. Histories that start mid-life hide earlier wear.",
+  "Only degradation modes present in the training data (HPC and fan) are represented."
+ ]
+}
